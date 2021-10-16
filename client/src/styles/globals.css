@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    @font-face {
+        font-family: Baloo;
+        src: url(/fonts/baloo/regular.ttf);
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: Somatic;
+        src: url(/fonts/somatic/regular.otf);
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: Comfortaa;
+        font-weight: 300;
+        src: url(/fonts/comfortaa/light.ttf);
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: Comfortaa;
+        font-weight: 400;
+        src: url(/fonts/comfortaa/regular.ttf);
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: Comfortaa;
+        font-weight: 700;
+        src: url(/fonts/comfortaa/bold.ttf);
+        font-display: swap;
+    }
+
+    * {
+        scroll-behavior: smooth;
+        @apply box-border;
+    }
+
+    ::selection {
+        @apply bg-theme-green-light bg-blend-difference text-white;
+    }
+
+    ::-moz-selection {
+        @apply bg-theme-green-light bg-blend-difference text-white;
+    }
+
+    html,
+    body {
+        @apply overflow-x-hidden;
+    }
+}
+
+@layer components {
+    .btn > span {
+        @apply block rounded-3.5 px-10 py-3 transform translate-y-[-4px] hover:translate-y-0 font-baloo text-lg leading-7 tracking-wide duration-200 ease-in-out;
+    }
+
+    .bird {
+        @apply animate-[bird-fly-cycle] w-20 h-32 animate-iteration-infinite animate-timing-[steps(10)];
+        background-image: url(/images/illustrations/bird-cells.svg);
+        background-size: auto 100%;
+    }
+
+    .bird-container {
+        @apply absolute top-[20%] left-[-10%] transform scale-0 translate-x-[-10vw] animate-[bird-fly] animate-iteration-infinite animate-timing-linear;
+    }
+
+    .tree {
+        @apply animate-[tree-1] animate-iteration-infinite animate-duration-[5s];
+    }
+
+    .tree2 {
+        @apply animate-[tree-2] animate-iteration-infinite animate-duration-[4s];
+    }
+}
