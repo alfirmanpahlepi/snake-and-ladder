@@ -2,49 +2,32 @@ export default function Home() {
   //   const randomHsl = (): string => `hsla(${Math.random() * 360}, 100%, 50%, 1)`;
 
   return (
-    <div
-      style={{
-        backgroundImage:
-          "url('https://ggquiz.netlify.app/dist/img/Background-2.png')",
-      }}
-      className="h-screen w-screen flex p-5 space-x-5"
-    >
-      <div className="flex-[4] flex flex-col rounded-3xl bg-white">
-        <h2 className="uppercase text-4xl font-bold text-center p-5">
-          Snake & ladder
-        </h2>
-        <div
+    <div className="relative h-screen min-w-screen flex">
+      <div
+        style={{
+          backgroundImage:
+            "url('https://store.schoolspecialty.com/OA_HTML/xxssi_ibeGetWCCImage.jsp?docName=F3850995&Rendition=Large')",
+        }}
+        className="h-screen w-screen bg-cover absolute top-0 left-0"
+      ></div>
+      <div className="z-10 h-full w-full flex flex-col justify-center items-center ring">
+        <h4
           style={{
-            background:
-              "gradient(circle, rgba(99, 155, 193, 1) 0%, rgba(89, 145, 182, 1) 33%, rgba(48, 104, 139, 1) 100%);",
+            textShadow:
+              "-4px 4px 0 #fff,4px 4px 0 #fff,4px -4px 0 #fff,-4px -4px 0 #fff",
           }}
-          className="h-full flex flex-col items-center justify-center"
+          className="text-8xl font-extrabold text-red-600 mb-20"
         >
-          <div className="w-1/2 h-[18rem] flex flex-col rounded-2xl">
-            <div className="flex border-b-2">
-              <button className="p-2">Create</button>
-              <button className="p-2">Join</button>
-            </div>
-            <div className="flex flex-col justify-center items-center h-full space-y-5 py-10">
-              <input placeholder="room name" className="text-center border" />
-              <button className="bg-indigo-900 text-white font-bold text-xl px-5 py-1 rounded-2xl">
-                Play
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="bg-white flex-1 overflow-hidden rounded-3xl">
-        <h4 className="border-b-2 font-semibold text-2xl p-3">
-          online users : {users.length}
+          Snake & Ladder
         </h4>
-        <div className="overflow-auto h-full p-3">
-          {users.map((user, index) => (
-            <p key={index} className="font-semibold">
-              {user}
-            </p>
-          ))}
-        </div>
+        <input className="border-2 border-gray-300 my-10 py-2 px-4 rounded-3xl text-center" />
+        <button className="border-2 border-white py-2 px-8 text-xl font-semibold rounded-3xl text-white bg-red-700 hover:scale-125 duration-200">
+          Create Room
+        </button>
+        <span className="my-3 font-bold text-lg">or</span>
+        <button className="border-2 border-white py-2 px-8 text-xl font-semibold rounded-3xl text-white bg-green-700 hover:scale-125 duration-200">
+          Join Room
+        </button>
       </div>
     </div>
   );
