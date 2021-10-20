@@ -1,21 +1,32 @@
 export default function Room() {
   return (
-    <div className="p-5 h-screen w-screen flex space-x-7">
-      <div className="flex-[2.5] ring p-5 flex flex-col space-y-5">
-        <div className="h-2/3 ring p-3 flex space-x-5">
-          <div className="ring flex-1"></div>
-          <div className="ring p-2 flex-1 grid grid-cols-10 gap-2">
-            {
-              grids().map((el) => (
-                <span key={el} className="border flex justify-center items-center text-sm">{el}</span>
-              ))
-            }
-          </div>
+    <div className="p-5 h-screen w-screen flex space-x-7 relative">
+      <div className="absolute top-0 left-0 h-screen w-screen bg-cover blur" style={{ backgroundImage: "url(/background.jpg)" }}></div>
+      <div className="flex-[2.5] border p-5 flex flex-col space-y-5 bg-gray-50 z-20">
+        <p className="text-right">max player :
+          <select>
+            <option>5</option>
+            <option>4</option>
+            <option>3</option>
+            <option>2</option>
+            <option>1</option>
+          </select>
+        </p>
+        <div className="h-1/2 p-3 flex justify-center items-center space-x-5">
+          {
+            [1, 2, 3, 4, 5].map((e) => (
+              <div key={e} className="h-40 w-40 flex flex-col justify-center items-center space-y-3">
+                <div className="h-20 w-20 rounded-full border-2 grid place-items-center text-2xl font-semibold">A</div>
+                <h6 className="font-semibold">Alfirman Ejha Pahlepi</h6>
+              </div>
+
+            ))
+          }
         </div>
-        <div className="h-1/3 ring p-5 flex space-x-5">
+        <div className="h-1/2 p-5 flex space-x-5">
           <button className="w-1/2 bg-green-500 hover:bg-green-600 active:bg-green-400 shadow-lg rounded-3xl text-white flex justify-center items-center text-7xl font-bold uppercase tracking-widest">ready</button>
           <div className="w-1/2 flex flex-col">
-            <div className="flex-grow overflow-auto border">
+            <div className="flex-grow overflow-auto border bg-white">
               {
                 [1, 1, 11, 1, 11, 1, 1, 1, 1, 1, 1, 1].map((el, i) => (
                   <p key={i}>admin : welcome</p>
@@ -29,7 +40,7 @@ export default function Room() {
           </div>
         </div>
       </div>
-      <div className="flex-1 ring px-5 overflow-auto">
+      <div className="flex-1 border px-5 overflow-auto bg-gray-50 z-20">
         <h4 className="font-bold text-2xl border-b-2 py-3">online users: 100</h4>
         <div className="py-3 space-y-3">
           {
@@ -89,20 +100,17 @@ const users = [
   "Walter",
 ];
 
-const grids = () => {
-  const arr = []
-  const temp = []
-  for (let i = 100; i >= 1; i--) {
-    temp.push(i)
-    if(temp.length === 10){
-      if(temp[0] % 20 !== 0) temp.reverse()
-      arr.push(...temp)
-      temp.length = 0
-    }
-  } 
+// const grids = (num: number) => {
+//   const arr = []
+//   const temp = []
+//   for (let i = num; i >= 1; i--) {
+//     temp.push(i)
+//     if (temp.length === 10) {
+//       if (temp[0] % 20 !== 0) temp.reverse()
+//       arr.push(...temp)
+//       temp.length = 0
+//     }
+//   }
 
-  return arr
-}
-
-console.log(grids());
-
+//   return arr
+// }
