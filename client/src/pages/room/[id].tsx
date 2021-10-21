@@ -99,18 +99,3 @@ const users = [
   "Victor",
   "Walter",
 ];
-
-// const grids = (num: number) => {
-//   const arr = []
-//   const temp = []
-//   for (let i = num; i >= 1; i--) {
-//     temp.push(i)
-//     if (temp.length === 10) {
-//       if (temp[0] % 20 !== 0) temp.reverse()
-//       arr.push(...temp)
-//       temp.length = 0
-//     }
-//   }
-
-//   return arr
-// }
