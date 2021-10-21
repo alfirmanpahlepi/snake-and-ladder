@@ -22,7 +22,7 @@ export default function Play() {
                 <div className="h-[600px] w-[25rem] border z-20 bg-gray-50/50 p-5 space-y-4 flex flex-col">
                     <div className="h-1/4 flex justify-center items-center flex-col">
                         <span className="text-xl font-semibold text-red-800 h-10 w-10">5s</span>
-                        <h3 className="text-5xl font-extrabold text-green-800">Your turn</h3>
+                        <h3 className="text-4xl font-bold text-green-800">Ejha's turn</h3>
                     </div>
                     <div className="h-2/4 flex flex-col">
                         <div className="flex-grow overflow-auto border bg-white/50">
