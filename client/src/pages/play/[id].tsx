@@ -1,4 +1,5 @@
 import { useState } from "react"
+import Image from "next/image"
 
 export default function Play() {
     const [diceNumber, setDiceNumber] = useState(1)
@@ -43,10 +44,18 @@ export default function Play() {
                         </button>
                     </div>
                 </div>
-                <div className="w-[600px] h-[600px] z-20 border-4 border-gray-800/80 bg-white/20 p-3 grid grid-cols-10">
+                <div className="w-[600px] h-[600px] z-20 bg-white/20 relative bg-cover grid grid-cols-10 p-6" style={{ backgroundImage: "url('/board.png')" }}>
                     {
                         grids(100).map((e, i) => (
-                            <span key={i} className={`${e % 2 === 0 ? "bg-red-700" : "bg-white"} border text-xs inline-block p-1`}>{e}</span>
+                            <div key={i} className="flex justify-center items-center">
+                                <div className="h-10 w-10 rounded-full flex items-center justify-center">
+                                    {
+                                        e === 15 && <span className="h-10 w-10 rounded-full bg-purple-700 border-2 border-gray-200 grid place-items-center font-semibold">
+                                            S
+                                        </span>
+                                    }
+                                </div>
+                            </div>
                         ))
                     }
                 </div>
