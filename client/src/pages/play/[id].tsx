@@ -1,4 +1,3 @@
-import Image from "next/image"
 import { useState } from "react"
 
 export default function Play() {
@@ -20,10 +19,13 @@ export default function Play() {
         <>
             <div className="absolute top-0 h-screen w-screen bg-cover blur z-10" style={{ backgroundImage: "url(/background.jpg)" }}></div>
             <div className="h-screen w-screen space-x-10 flex z-20 p-4 justify-center items-center">
-                <div className="h-[600px] w-[25rem] ring z-20 bg-gray-50 p-5 space-y-4 flex flex-col">
-                    <div className="ring h-1/4"></div>
+                <div className="h-[600px] w-[25rem] border z-20 bg-gray-50/50 p-5 space-y-4 flex flex-col">
+                    <div className="h-1/4 flex justify-center items-center flex-col">
+                        <span className="text-xl font-semibold text-red-800 h-10 w-10">5s</span>
+                        <h3 className="text-5xl font-extrabold text-green-800">Your turn</h3>
+                    </div>
                     <div className="h-2/4 flex flex-col">
-                        <div className="flex-grow overflow-auto border bg-white">
+                        <div className="flex-grow overflow-auto border bg-white/50">
                             {
                                 [1, 1, 11, 1, 11, 1, 1, 1, 1, 1, 1, 1].map((el, i) => (
                                     <p key={i}>admin : welcome</p>
@@ -31,7 +33,7 @@ export default function Play() {
                             }
                         </div>
                         <div className="flex items-center mt-3 space-x-3">
-                            <input className="flex-grow border" />
+                            <input className="flex-grow border bg-white/50" />
                             <button className="bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-400 shadow text-white px-3">SEND</button>
                         </div>
                     </div>
@@ -41,7 +43,7 @@ export default function Play() {
                         </button>
                     </div>
                 </div>
-                <div className="w-[600px] h-[600px] z-20 border-4 border-gray-800 bg-white p-3 grid grid-cols-10">
+                <div className="w-[600px] h-[600px] z-20 border-4 border-gray-800/80 bg-white/20 p-3 grid grid-cols-10">
                     {
                         grids(100).map((e, i) => (
                             <span key={i} className={`${e % 2 === 0 ? "bg-red-700" : "bg-white"} border text-xs inline-block p-1`}>{e}</span>
