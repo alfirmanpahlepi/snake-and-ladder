@@ -1,4 +1,7 @@
 import { useState } from "react"
+import Board from "components/Board"
+import Chat from "components/Chat"
+import Layout from "components/Layout"
 
 export default function Play() {
     const [diceNumber, setDiceNumber] = useState(1)
@@ -16,26 +19,15 @@ export default function Play() {
         }, 50);
     }
     return (
-        <>
-            <div className="absolute top-0 h-screen w-screen bg-cover blur z-10" style={{ backgroundImage: "url(/background.jpg)" }}></div>
-            <div className="h-screen w-screen space-x-10 flex z-20 p-4 justify-center items-center">
+        <Layout blur={true}>
+            <div className="h-full w-full space-x-10 flex z-20 p-4 justify-center items-center">
                 <div className="h-[600px] w-[25rem] border z-20 bg-gray-50/50 p-5 space-y-4 flex flex-col">
                     <div className="h-1/4 flex justify-center items-center flex-col">
                         <span className="text-xl font-semibold text-red-800 h-10 w-10">5s</span>
                         <h3 className="text-4xl font-bold text-green-800">Ejha's turn</h3>
                     </div>
-                    <div className="h-2/4 flex flex-col">
-                        <div className="flex-grow overflow-auto border bg-white/50">
-                            {
-                                [1, 1, 11, 1, 11, 1, 1, 1, 1, 1, 1, 1].map((el, i) => (
-                                    <p key={i}>admin : welcome</p>
-                                ))
-                            }
-                        </div>
-                        <div className="flex items-center mt-3 space-x-3">
-                            <input className="flex-grow border bg-white/50" />
-                            <button className="bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-400 shadow text-white px-3">SEND</button>
-                        </div>
+                    <div className="h-2/4">
+                        <Chat />
                     </div>
                     <div className="h-1/4 flex justify-center items-center">
                         <button onClick={rollDice} className="h-24 w-24 relative">
@@ -43,37 +35,8 @@ export default function Play() {
                         </button>
                     </div>
                 </div>
-                <div className="w-[600px] h-[600px] z-20 bg-white/20 relative bg-cover grid grid-cols-10 p-6" style={{ backgroundImage: "url('/board.png')" }}>
-                    {
-                        grids(100).map((e, i) => (
-                            <div key={i} className="flex justify-center items-center">
-                                <div className="h-10 w-10 rounded-full flex items-center justify-center">
-                                    {
-                                        e === 15 && <span className="h-10 w-10 rounded-full bg-purple-700 border-2 border-gray-200 grid place-items-center font-semibold">
-                                            S
-                                        </span>
-                                    }
-                                </div>
-                            </div>
-                        ))
-                    }
-                </div>
+                <Board />
             </div>
-        </>
+        </Layout>
     )
-}
-
-const grids = (num: number) => {
-    const arr = []
-    const temp = []
-    for (let i = num; i >= 1; i--) {
-        temp.push(i)
-        if (temp.length === 10) {
-            if (temp[0] % 20 !== 0) temp.reverse()
-            arr.push(...temp)
-            temp.length = 0
-        }
-    }
-
-    return arr
 }
