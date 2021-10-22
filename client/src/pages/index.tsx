@@ -1,8 +1,34 @@
-import Layout from "components/Layout";
+import Layout from "@/components/Layout";
 import { useRouter } from "next/router"
+import { useEffect } from "react";
+import socket from "./config/socket";
+import { useGlobalState } from "./_app";
 
 export default function Home() {
   const { push } = useRouter()
+  const { name, setName } = useGlobalState()
+
+  useEffect(() => {
+    if (!name) {
+      const newName = prompt("your name")
+      if (!newName) {
+        alert("name cant be empty")
+        return window.location.reload()
+      } else {
+        setName(newName)
+        socket.emit("online", { name: newName }, (error: string) => { if (error) return alert(error) })
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    socket.on("users", ({ users }) => console.log(users)
+    )
+  }, [])
+
+  console.log(name);
+
+
   const createRoom = () => {
     const roomName = prompt("room name ?");
     if (!roomName) return alert("can not be empty");
@@ -17,7 +43,7 @@ export default function Home() {
   return (
     <Layout blur={false}>
       <div className="h-full w-full flex">
-        <div className="z-10 h-full w-full flex flex-col justify-center items-center ring">
+        <div className="z-10 h-full w-full flex flex-col justify-center items-center">
           <h4
             style={{
               textShadow:

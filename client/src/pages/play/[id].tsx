@@ -1,7 +1,7 @@
 import { useState } from "react"
-import Board from "components/Board"
-import Chat from "components/Chat"
-import Layout from "components/Layout"
+import Board from "@/components/Board"
+import Chat from "@/components/Chat"
+import Layout from "@/components/Layout"
 
 export default function Play() {
     const [diceNumber, setDiceNumber] = useState(1)

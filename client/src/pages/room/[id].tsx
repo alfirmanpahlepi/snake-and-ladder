@@ -1,8 +1,8 @@
-import Chat from "components/Chat";
-import Layout from "components/Layout";
-import Player from "components/Player";
-import Settings from "components/Settings";
-import User from "components/User";
+import Chat from "@/components/Chat";
+import Layout from "@/components/Layout";
+import Player from "@/components/Player";
+import Settings from "@/components/Settings";
+import User from "@/components/User";
 
 export default function Room() {
   return (
