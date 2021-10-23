@@ -8,9 +8,15 @@ import User from "@/components/User";
 import { useGlobalState } from "./_app";
 import socket from "@/config/socket";
 
+interface Room {
+  id: String,
+  name: String
+}
+
 interface User {
   name: String,
   id: String
+  room: Room
 }
 
 export default function Room() {

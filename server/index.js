@@ -88,6 +88,8 @@ io.on("connect", (socket) => {
 
     const user = getUserById(socket.id);
 
+    if (!user) return callback("user not found");
+
     socket
       .to(target.id)
       .emit("invite", { roomName: user.room.name, roomId: user.room.id });

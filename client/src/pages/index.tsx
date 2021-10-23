@@ -25,6 +25,8 @@ export default function Home() {
   useEffect(() => {
     socket.on("users", ({ users }) => setUsers(users))
     socket.on("invite", ({ roomName, roomId }) => {
+      console.log(roomName, roomId);
+
       alert(`you have been invited to room ${roomName}`)
       if (confirm("do you accept ?")) push(`/room?name=${roomName}&id=${roomId}`)
     })

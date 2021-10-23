@@ -1,4 +1,5 @@
 import socket from "@/config/socket"
+import { useState } from "react"
 
 interface Room {
     name: String,
@@ -14,10 +15,16 @@ interface UserProps {
 }
 
 export default function User({ user }: UserProps) {
+    const [isDisable, setDisable] = useState(false)
 
     const inviteUser = (): void => {
+        setDisable(true)
         if (!user.room.id)
             socket.emit("inviteUser", { target: user }, (error: string) => { if (error) alert(error) })
+
+        setTimeout(() => {
+            setDisable(false)
+        }, 5000);
 
     }
 
@@ -30,9 +37,9 @@ export default function User({ user }: UserProps) {
                 <p className="font-semibold">{user.name}</p>
             </div>
             <button
-                disabled={!!user.room.id}
+                disabled={!!user.room.id || isDisable}
                 onClick={inviteUser}
-                className={`${user.room.id ? "cursor-not-allowed bg-gray-200 text-gray-400" : "bg-gray-300 hover:bg-gray-400 active:bg-gray-200 text-gray-700"} px-4 border rounded`}>
+                className={`${user.room.id || isDisable ? "cursor-not-allowed bg-gray-200 text-gray-400" : "bg-gray-300 hover:bg-gray-400 active:bg-gray-200 text-gray-700"} px-4 border rounded`}>
                 invite
             </button>
         </div>
