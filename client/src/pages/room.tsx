@@ -35,6 +35,9 @@ export default function Room() {
     return () => setRoomData({ room: "", roomMate: [] })
   }, [])
 
+  console.log(users);
+
+
   return (
     <Layout blur={true}>
       <div className="p-5 h-full w-full flex space-x-7">

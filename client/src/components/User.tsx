@@ -1,7 +1,13 @@
+interface Room {
+    name: String,
+    id: String
+}
+
 interface UserProps {
     user: {
-        name: String,
         id: String
+        name: String,
+        room: Room
     }
 }
 
@@ -14,7 +20,11 @@ export default function User({ user }: UserProps) {
                 </div>
                 <p className="font-semibold">{user.name}</p>
             </div>
-            <button className="px-4 border bg-gray-300 hover:bg-gray-400 active:bg-gray-200 text-gray-700 rounded">invite</button>
+            <button
+                disabled={!!user.room.id}
+                className={`${user.room.id ? "cursor-not-allowed bg-gray-200 text-gray-400" : "bg-gray-300 hover:bg-gray-400 active:bg-gray-200 text-gray-700"} px-4 border rounded`}>
+                invite
+            </button>
         </div>
     )
 }

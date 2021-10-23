@@ -2,9 +2,15 @@ import type { AppProps } from "next/app";
 import { createContext, useContext, useState } from "react";
 import "../styles/globals.css";
 
+interface Room {
+  id: String,
+  name: String
+}
+
 interface User {
   name: String,
   id: String
+  room: Room
 }
 
 type Users = User[]

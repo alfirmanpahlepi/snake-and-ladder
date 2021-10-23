@@ -48,11 +48,9 @@ io.on("connect", (socket) => {
 
     const user = getUserById(socket.id);
 
-    user.room = { name: roomName, id: roomId };
+    const userIndex = users.findIndex((u) => u.id === socket.id);
 
-    const filtered = users.filter((u) => u.id !== user.id);
-
-    users = [...filtered, user];
+    users[userIndex].room = { name: roomName, id: roomId };
 
     socket.join(user.room.id);
 
@@ -69,6 +67,8 @@ io.on("connect", (socket) => {
       roomMate: getUsersInRoom(user.room.id),
     });
 
+    io.emit("users", { users });
+
     callback();
   });
 
@@ -82,6 +82,16 @@ io.on("connect", (socket) => {
 
     callback();
   });
+
+  // socket.on("inviteUser", ({ target }, callback) => {
+  //   const user = getUserById(socket.id);
+
+  //   socket
+  //     .to(target.id)
+  //     .emit("invite", { roomName: user.room.name, roomId: user.room.id });
+
+  //   callback();
+  // });
 
   socket.on("disconnect", () => {
     const user = getUserById(socket.id);
