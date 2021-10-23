@@ -1,10 +1,38 @@
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import Chat from "@/components/Chat";
 import Layout from "@/components/Layout";
 import Player from "@/components/Player";
 import Settings from "@/components/Settings";
 import User from "@/components/User";
+import { useGlobalState } from "./_app";
+import socket from "@/config/socket";
 
 export default function Room() {
+  const { replace, query } = useRouter()
+  const { name } = useGlobalState()
+  const [roomData, setRoomData] = useState({ room: "", roomMate: [] })
+  // const [users, setUsers] = useState([])
+
+  useEffect((): void => {
+    if (!name || !query.name || !query.id) replace("/")
+    else {
+      socket.emit("join", { roomName: query.name, roomId: query.id }, (erorr: string): void => {
+        if (erorr) alert(erorr)
+      })
+    }
+  }, [])
+
+  useEffect(() => {
+    socket.on("roomData", ({ room, roomMate }) => {
+      setRoomData({ room, roomMate })
+    })
+    return () => setRoomData({ room: "", roomMate: [] })
+  }, [])
+
+  console.log(roomData);
+
+
   return (
     <Layout blur={true}>
       <div className="p-5 h-full w-full flex space-x-7">

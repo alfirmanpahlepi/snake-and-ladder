@@ -9,7 +9,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const [name, setName] = useState("")
 
   return <globalState.Provider value={{ name, setName }}>
-    return <Component {...pageProps} id="component" />
+    <Component {...pageProps} id="component" />
   </globalState.Provider>;
 }
 

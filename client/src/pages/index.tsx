@@ -1,8 +1,9 @@
 import Layout from "@/components/Layout";
 import { useRouter } from "next/router"
 import { useEffect } from "react";
-import socket from "./config/socket";
 import { useGlobalState } from "./_app";
+import uuid from "uuid-v4";
+import socket from "@/config/socket";
 
 export default function Home() {
   const { push } = useRouter()
@@ -26,18 +27,19 @@ export default function Home() {
     )
   }, [])
 
-  console.log(name);
-
-
   const createRoom = () => {
     const roomName = prompt("room name ?");
     if (!roomName) return alert("can not be empty");
-    else push(`/room/${roomName}`)
+    else push(`/room?name=${roomName}&id=${uuid()}`)
+
   };
 
   const joinRoom = () => {
+    const roomName = prompt("room name ?");
     const roomId = prompt("room id ?");
-    if (!roomId) return alert("can not be empty");
+    if (!roomId || !roomName) return alert("can not be empty");
+    else push(`/room?name=${roomName}&id=${roomId}`)
+
   };
 
   return (

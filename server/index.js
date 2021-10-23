@@ -17,29 +17,57 @@ app.use(
   })
 );
 
-let online = [];
+let users = [];
 
 // const user = {
 //     name:"",
 //     id:"",
-//     room:""
+//     room:{ name:"", id:"" }
 // }
 
-const getUserById = (id) => online.find((user) => user.id === id);
+const getUserById = (id) => users.find((user) => user.id === id);
 
-const getUsersInRoom = (room) => online.filter((user) => user.room === room);
+const getUsersInRoom = (roomId) =>
+  users.filter((user) => user.room.id === roomId);
 
 io.on("connect", (socket) => {
   socket.on("online", ({ name }, callback) => {
-    const existingUser = online.some((user) => user.name === name);
+    const existingUser = users.some((user) => user.name === name);
 
-    if (existingUser) return callback("name is already exist");
+    if (existingUser) return callback("name is already taken");
 
-    online.push({ name, id: socket.id, room: "" });
+    users.push({ name, id: socket.id, room: { name: "", id: "" } });
 
-    io.emit("users", { users: online });
+    io.emit("users", { users });
 
     callback();
+  });
+
+  socket.on("join", ({ roomName, roomId }, callback) => {
+    if (!roomName || !roomId) return callback("bad request");
+
+    const user = getUserById(socket.id);
+
+    user.room = { name: roomName, id: roomId };
+
+    const filtered = users.filter((u) => u.id !== user.id);
+
+    users = [...filtered, user];
+
+    socket.join(user.room.id);
+
+    socket.emit("message", {
+      user: "admin",
+      text: `${user.name}, welcome to room ${user.room.name}`,
+    });
+    socket.broadcast
+      .to(user.room.id)
+      .emit("message", { user: "admin", message: `${user.name} has joined!` });
+
+    io.to(user.room.id).emit("roomData", {
+      room: user.room.name,
+      roomMate: getUsersInRoom(user.room.id),
+    });
   });
 
   socket.on("disconnect", () => {
@@ -47,22 +75,22 @@ io.on("connect", (socket) => {
 
     if (!user) return;
 
-    const filtered = online.filter((u) => u.id !== user.id);
+    const filtered = users.filter((u) => u.id !== user.id);
 
-    online = [...filtered];
+    users = [...filtered];
 
     // admin message
-    io.to(user.room).emit("message", {
+    io.to(user.room.id).emit("message", {
       user: "Admin",
       text: `${user.name} has left.`,
     });
     // room data
-    io.to(user.room).emit("roomData", {
-      room: user.room,
-      users: getUsersInRoom(user.room),
+    io.to(user.room.id).emit("roomData", {
+      room: user.room.name,
+      roomMate: getUsersInRoom(user.room.id),
     });
-    // online data
-    io.emit("users", { users: online });
+    // users data
+    io.emit("users", { users });
   });
 });
 
