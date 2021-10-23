@@ -1,7 +1,20 @@
 import type { AppProps } from "next/app";
 import { createContext, useContext, useState } from "react";
-
 import "../styles/globals.css";
+
+interface User {
+  name: String,
+  id: String
+}
+
+type Users = User[]
+
+interface GlobalState {
+  users: Users,
+  name: String,
+  setUsers: Function
+  setName: Function,
+}
 
 const globalState: any = createContext({})
 
@@ -14,18 +27,4 @@ export default function App({ Component, pageProps }: AppProps) {
   </globalState.Provider>;
 }
 
-type User = {
-  name: String,
-  id: String
-}
-
-type Users = User[]
-
-type GLobalState = {
-  users: Users,
-  name: String,
-  setUsers: Function
-  setName: Function,
-}
-
-export const useGlobalState = (): GLobalState => useContext(globalState)
+export const useGlobalState = (): GlobalState => useContext(globalState)

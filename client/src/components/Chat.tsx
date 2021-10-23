@@ -1,7 +1,7 @@
 import socket from "@/config/socket"
 import { useEffect, useState } from "react"
 
-type message = {
+interface message {
     user: string,
     text: string,
 }

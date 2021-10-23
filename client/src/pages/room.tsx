@@ -8,7 +8,7 @@ import User from "@/components/User";
 import { useGlobalState } from "./_app";
 import socket from "@/config/socket";
 
-type User = {
+interface User {
   name: String,
   id: String
 }
@@ -44,8 +44,8 @@ export default function Room() {
           </div>
           <div className="h-1/2 p-3 flex justify-center items-center space-x-5">
             {
-              [1, 2, 3, 4, 5].map((e) => (
-                <Player key={e} />
+              roomData.roomMate.map((user: User, i: number) => (
+                <Player key={i} user={user} />
               ))
             }
           </div>
@@ -62,7 +62,7 @@ export default function Room() {
           <h4 className="font-bold text-2xl border-b-2 py-3">online users: 100</h4>
           <div className="py-3 space-y-3">
             {
-              users.map((user: User, i) => (
+              users.map((user: User, i: number) => (
                 <User key={i} user={user} />
               ))
             }
@@ -72,39 +72,3 @@ export default function Room() {
     </Layout>
   );
 }
-// const users = [
-//   "Alfirman Ejha Pahlepi",
-//   "Adam",
-//   "Alex",
-//   "Aaron",
-//   "Ben",
-//   "Carl",
-//   "Dan",
-//   "David",
-//   "Edward",
-//   "Fred",
-//   "Frank",
-//   "George",
-//   "Hal",
-//   "Hank",
-//   "Ike",
-//   "John",
-//   "Jack",
-//   "Joe",
-//   "Larry",
-//   "Monte",
-//   "Matthew",
-//   "Mark",
-//   "Nathan",
-//   "Otto",
-//   "Paul",
-//   "Peter",
-//   "Roger",
-//   "Roger",
-//   "Steve",
-//   "Thomas",
-//   "Tim",
-//   "Ty",
-//   "Victor",
-//   "Walter",
-// ];

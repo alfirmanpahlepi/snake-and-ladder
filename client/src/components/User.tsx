@@ -1,4 +1,4 @@
-type UserProps = {
+interface UserProps {
     user: {
         name: String,
         id: String
