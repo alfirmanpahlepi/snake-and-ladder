@@ -83,15 +83,17 @@ io.on("connect", (socket) => {
     callback();
   });
 
-  // socket.on("inviteUser", ({ target }, callback) => {
-  //   const user = getUserById(socket.id);
+  socket.on("inviteUser", ({ target }, callback) => {
+    if (target.room.id) return callback("user already in room");
 
-  //   socket
-  //     .to(target.id)
-  //     .emit("invite", { roomName: user.room.name, roomId: user.room.id });
+    const user = getUserById(socket.id);
 
-  //   callback();
-  // });
+    socket
+      .to(target.id)
+      .emit("invite", { roomName: user.room.name, roomId: user.room.id });
+
+    callback();
+  });
 
   socket.on("disconnect", () => {
     const user = getUserById(socket.id);

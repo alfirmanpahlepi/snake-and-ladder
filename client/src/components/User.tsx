@@ -1,3 +1,5 @@
+import socket from "@/config/socket"
+
 interface Room {
     name: String,
     id: String
@@ -12,6 +14,13 @@ interface UserProps {
 }
 
 export default function User({ user }: UserProps) {
+
+    const inviteUser = (): void => {
+        if (!user.room.id)
+            socket.emit("inviteUser", { target: user }, (error: string) => { if (error) alert(error) })
+
+    }
+
     return (
         <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -22,6 +31,7 @@ export default function User({ user }: UserProps) {
             </div>
             <button
                 disabled={!!user.room.id}
+                onClick={inviteUser}
                 className={`${user.room.id ? "cursor-not-allowed bg-gray-200 text-gray-400" : "bg-gray-300 hover:bg-gray-400 active:bg-gray-200 text-gray-700"} px-4 border rounded`}>
                 invite
             </button>
