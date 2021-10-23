@@ -68,6 +68,19 @@ io.on("connect", (socket) => {
       room: user.room.name,
       roomMate: getUsersInRoom(user.room.id),
     });
+
+    callback();
+  });
+
+  socket.on("sendMessage", ({ message }, callback) => {
+    const user = getUserById(socket.id);
+
+    io.to(user.room.id).emit("message", {
+      user: user.name,
+      text: message,
+    });
+
+    callback();
   });
 
   socket.on("disconnect", () => {
