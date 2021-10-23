@@ -1,10 +1,26 @@
+import socket from "@/config/socket"
+import { useEffect, useState } from "react"
+
+type message = {
+    user: string,
+    text: string,
+}
 export default function Chat() {
+    const [message, setMessage] = useState("")
+    const [messages, setMessages] = useState([])
+
+
+    useEffect(() => {
+        socket.on("message", ({ text, user }: message) => {
+            setMessages((msg): any => [...msg, { text, user }])
+        })
+    }, [])
     return (
         <div className="flex flex-col h-full w-full">
             <div className="flex-grow overflow-auto border bg-white/50">
                 {
-                    [1, 1, 11, 1, 11, 1, 1, 1, 1, 1, 1, 1].map((el, i) => (
-                        <p key={i}>admin : welcome</p>
+                    messages.map((msg: message, i: number) => (
+                        <p key={i}>{msg?.user} : {msg?.text}</p>
                     ))
                 }
             </div>

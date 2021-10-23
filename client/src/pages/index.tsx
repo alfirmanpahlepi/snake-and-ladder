@@ -7,7 +7,7 @@ import socket from "@/config/socket";
 
 export default function Home() {
   const { push } = useRouter()
-  const { name, setName } = useGlobalState()
+  const { name, setName, setUsers } = useGlobalState()
 
   useEffect(() => {
     if (!name) {
@@ -23,7 +23,7 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    socket.on("users", ({ users }) => console.log(users)
+    socket.on("users", ({ users }) => setUsers(users)
     )
   }, [])
 

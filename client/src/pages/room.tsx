@@ -8,13 +8,17 @@ import User from "@/components/User";
 import { useGlobalState } from "./_app";
 import socket from "@/config/socket";
 
+type User = {
+  name: String,
+  id: String
+}
+
 export default function Room() {
   const { replace, query } = useRouter()
-  const { name } = useGlobalState()
+  const { name, users } = useGlobalState()
   const [roomData, setRoomData] = useState({ room: "", roomMate: [] })
-  // const [users, setUsers] = useState([])
 
-  useEffect((): void => {
+  useEffect(() => {
     if (!name || !query.name || !query.id) replace("/")
     else {
       socket.emit("join", { roomName: query.name, roomId: query.id }, (erorr: string): void => {
@@ -27,11 +31,9 @@ export default function Room() {
     socket.on("roomData", ({ room, roomMate }) => {
       setRoomData({ room, roomMate })
     })
+
     return () => setRoomData({ room: "", roomMate: [] })
   }, [])
-
-  console.log(roomData);
-
 
   return (
     <Layout blur={true}>
@@ -60,7 +62,7 @@ export default function Room() {
           <h4 className="font-bold text-2xl border-b-2 py-3">online users: 100</h4>
           <div className="py-3 space-y-3">
             {
-              users.map((user, i) => (
+              users.map((user: User, i) => (
                 <User key={i} user={user} />
               ))
             }
@@ -70,39 +72,39 @@ export default function Room() {
     </Layout>
   );
 }
-const users = [
-  "Alfirman Ejha Pahlepi",
-  "Adam",
-  "Alex",
-  "Aaron",
-  "Ben",
-  "Carl",
-  "Dan",
-  "David",
-  "Edward",
-  "Fred",
-  "Frank",
-  "George",
-  "Hal",
-  "Hank",
-  "Ike",
-  "John",
-  "Jack",
-  "Joe",
-  "Larry",
-  "Monte",
-  "Matthew",
-  "Mark",
-  "Nathan",
-  "Otto",
-  "Paul",
-  "Peter",
-  "Roger",
-  "Roger",
-  "Steve",
-  "Thomas",
-  "Tim",
-  "Ty",
-  "Victor",
-  "Walter",
-];
+// const users = [
+//   "Alfirman Ejha Pahlepi",
+//   "Adam",
+//   "Alex",
+//   "Aaron",
+//   "Ben",
+//   "Carl",
+//   "Dan",
+//   "David",
+//   "Edward",
+//   "Fred",
+//   "Frank",
+//   "George",
+//   "Hal",
+//   "Hank",
+//   "Ike",
+//   "John",
+//   "Jack",
+//   "Joe",
+//   "Larry",
+//   "Monte",
+//   "Matthew",
+//   "Mark",
+//   "Nathan",
+//   "Otto",
+//   "Paul",
+//   "Peter",
+//   "Roger",
+//   "Roger",
+//   "Steve",
+//   "Thomas",
+//   "Tim",
+//   "Ty",
+//   "Victor",
+//   "Walter",
+// ];
