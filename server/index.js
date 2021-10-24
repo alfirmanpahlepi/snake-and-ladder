@@ -117,10 +117,27 @@ io.on("connect", (socket) => {
     callback();
   });
 
+  socket.on("kickUser", ({ target }, callback) => {
+    const user = getUserById(socket.id);
+
+    if (user.room.admin !== user.name || !user) return callback("forbidden");
+
+    socket.to(target.id).emit("kicked", "you has kicked by admin");
+
+    io.to(user.room.id).emit("message", {
+      user: "system",
+      text: `${target.name} has kicked by ${user.name}!`,
+    });
+
+    callback();
+  });
+
   socket.on("disconnect", () => {
     const user = getUserById(socket.id);
 
     if (!user) return;
+
+    socket.leave(user.room.id);
 
     const filtered = users.filter((u) => u.id !== user.id);
 

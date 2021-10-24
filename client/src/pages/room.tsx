@@ -40,6 +40,9 @@ export default function Room() {
       setRoomData({ room, roomMate, id, admin })
     })
 
+    socket.on("kicked", () => window.location.reload()
+    )
+
     return () => setRoomData({ room: "", roomMate: [], admin: "", id: "" })
   }, [])
 
