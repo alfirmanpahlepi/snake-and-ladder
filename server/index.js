@@ -41,7 +41,7 @@ io.on("connect", (socket) => {
     users.push({
       name,
       id: socket.id,
-      room: { name: "", id: "" },
+      room: { name: "", id: "", admin: "" },
       color: randomColor,
     });
 
@@ -57,20 +57,35 @@ io.on("connect", (socket) => {
 
     const userIndex = users.findIndex((u) => u.id === socket.id);
 
-    users[userIndex].room = { name: roomName, id: roomId };
+    const usersInRoom = getUsersInRoom(roomId);
+
+    if (usersInRoom.length)
+      users[userIndex].room = {
+        name: roomName,
+        id: roomId,
+        admin: usersInRoom[0].room.admin,
+      };
+    else
+      users[userIndex].room = {
+        name: roomName,
+        id: roomId,
+        admin: user.name,
+      };
 
     socket.join(user.room.id);
 
     socket.emit("message", {
-      user: "admin",
+      user: "system",
       text: `${user.name}, welcome to room ${user.room.name}`,
     });
     socket.broadcast
       .to(user.room.id)
-      .emit("message", { user: "admin", text: `${user.name} has joined!` });
+      .emit("message", { user: "system", text: `${user.name} has joined!` });
 
     io.to(user.room.id).emit("roomData", {
       room: user.room.name,
+      id: user.room.id,
+      admin: user.room.admin,
       roomMate: getUsersInRoom(user.room.id),
     });
 
@@ -115,12 +130,14 @@ io.on("connect", (socket) => {
 
     // admin message
     io.to(user.room.id).emit("message", {
-      user: "admin",
+      user: "system",
       text: `${user.name} has left.`,
     });
     // room data
     io.to(user.room.id).emit("roomData", {
       room: user.room.name,
+      id: user.room.id,
+      admin: user.room.admin,
       roomMate: getUsersInRoom(user.room.id),
     });
     // users data

@@ -10,7 +10,8 @@ import socket from "@/config/socket";
 
 interface Room {
   id: string,
-  name: string
+  name: string,
+  admin: string,
 }
 
 interface User {
@@ -23,7 +24,7 @@ interface User {
 export default function Room() {
   const { replace, query } = useRouter()
   const { name, users } = useGlobalState()
-  const [roomData, setRoomData] = useState({ room: "", roomMate: [] })
+  const [roomData, setRoomData] = useState({ room: "", roomMate: [], id: "", admin: "" })
 
   useEffect(() => {
     if (!name || !query.name || !query.id) replace("/")
@@ -35,15 +36,12 @@ export default function Room() {
   }, [])
 
   useEffect(() => {
-    socket.on("roomData", ({ room, roomMate }) => {
-      setRoomData({ room, roomMate })
+    socket.on("roomData", ({ room, roomMate, id, admin }) => {
+      setRoomData({ room, roomMate, id, admin })
     })
 
-    return () => setRoomData({ room: "", roomMate: [] })
+    return () => setRoomData({ room: "", roomMate: [], admin: "", id: "" })
   }, [])
-
-  console.log(users);
-
 
   return (
     <Layout blur={true}>

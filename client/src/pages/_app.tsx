@@ -5,6 +5,7 @@ import "../styles/globals.css";
 interface Room {
   id: string,
   name: string
+  admin: string
 }
 
 interface User {
