@@ -22,7 +22,7 @@ interface User {
 }
 
 export default function Room() {
-  const { replace, query } = useRouter()
+  const { replace, query, reload } = useRouter()
   const { name, users } = useGlobalState()
   const [roomData, setRoomData] = useState({ room: "", roomMate: [], id: "", admin: "" })
 
@@ -36,12 +36,9 @@ export default function Room() {
   }, [])
 
   useEffect(() => {
-    socket.on("roomData", ({ room, roomMate, id, admin }) => {
-      setRoomData({ room, roomMate, id, admin })
-    })
+    socket.on("roomData", ({ room, roomMate, id, admin }) => setRoomData({ room, roomMate, id, admin }))
 
-    socket.on("kicked", () => window.location.reload()
-    )
+    socket.on("kicked", reload)
 
     return () => setRoomData({ room: "", roomMate: [], admin: "", id: "" })
   }, [])
