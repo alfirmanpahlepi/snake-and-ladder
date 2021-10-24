@@ -9,8 +9,9 @@ interface Room {
 
 interface User {
   name: string,
-  id: string
-  room: Room
+  id: string,
+  room: Room,
+  color: string,
 }
 
 type Users = User[]
@@ -18,7 +19,7 @@ type Users = User[]
 interface GlobalState {
   users: Users,
   name: string,
-  setUsers: Function
+  setUsers: Function,
   setName: Function,
 }
 

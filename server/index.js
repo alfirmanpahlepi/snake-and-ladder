@@ -34,9 +34,16 @@ io.on("connect", (socket) => {
   socket.on("online", ({ name }, callback) => {
     const existingUser = users.some((user) => user.name === name);
 
+    const randomColor = "#" + (((1 << 24) * Math.random()) | 0).toString(16);
+
     if (existingUser) return callback("name is already taken");
 
-    users.push({ name, id: socket.id, room: { name: "", id: "" } });
+    users.push({
+      name,
+      id: socket.id,
+      room: { name: "", id: "" },
+      color: randomColor,
+    });
 
     io.emit("users", { users });
 

@@ -8,9 +8,10 @@ interface Room {
 
 interface UserProps {
     user: {
-        id: string
+        id: string,
         name: string,
-        room: Room
+        room: Room,
+        color: string
     }
 }
 
@@ -31,7 +32,7 @@ export default function User({ user }: UserProps) {
     return (
         <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-                <span style={{ backgroundColor: "#" + ((1 << 24) * Math.random() | 0).toString(16) }} className="h-10 w-10 rounded-full flex justify-center items-center">
+                <span style={{ backgroundColor: user.color || "#fff" }} className="h-10 w-10 uppercase rounded-full flex justify-center items-center font-semibold">
                     {user.name[0]}
                 </span>
                 <p className="font-semibold">{user.name}</p>

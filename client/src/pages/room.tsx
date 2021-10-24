@@ -15,8 +15,9 @@ interface Room {
 
 interface User {
   name: string,
-  id: string
-  room: Room
+  id: string,
+  room: Room,
+  color: string,
 }
 
 export default function Room() {
