@@ -54,6 +54,8 @@ io.on("connect", (socket) => {
 
     const user = getUserById(socket.id);
 
+    if (!user) return callback("forbidden");
+
     const userIndex = users.findIndex((u) => u.id === socket.id);
 
     const usersInRoom = getUsersInRoom(roomId);
@@ -63,12 +65,14 @@ io.on("connect", (socket) => {
         name: roomName,
         id: roomId,
         admin: usersInRoom[0].room.admin,
+        maxPlayer: 5,
       };
     else
       users[userIndex].room = {
         name: roomName,
         id: roomId,
         admin: user.name,
+        maxPlayer: 5,
       };
 
     socket.join(user.room.id);
@@ -82,6 +86,7 @@ io.on("connect", (socket) => {
       .emit("message", { user: "system", text: `${user.name} has joined!` });
 
     io.to(user.room.id).emit("roomData", {
+      maxPlayer: user.room.maxPlayer,
       room: user.room.name,
       id: user.room.id,
       admin: user.room.admin,
@@ -145,8 +150,35 @@ io.on("connect", (socket) => {
       : (users[userIndex].isReady = true);
 
     io.emit("users", { users });
-    
+
     io.to(user.room.id).emit("roomData", {
+      maxPlayer: user.room.maxPlayer,
+      room: user.room.name,
+      id: user.room.id,
+      admin: user.room.admin,
+      roomMate: getUsersInRoom(user.room.id),
+    });
+
+    callback();
+  });
+
+  socket.on("settings", ({ maxPlayer }, callback) => {
+    const user = getUserById(socket.id);
+
+    if (!user) return callback("forbidden");
+
+    const roomMate = getUsersInRoom(user.room.id);
+
+    let userIndex = 0;
+    roomMate.forEach((usr) => {
+      userIndex = users.findIndex((u) => u.id === usr.id);
+      users[userIndex].room.maxPlayer = maxPlayer;
+    });
+
+    io.emit("users", { users });
+
+    io.to(user.room.id).emit("roomData", {
+      maxPlayer: maxPlayer,
       room: user.room.name,
       id: user.room.id,
       admin: user.room.admin,
@@ -174,6 +206,7 @@ io.on("connect", (socket) => {
     });
     // room data
     io.to(user.room.id).emit("roomData", {
+      maxPlayer: user.room.maxPlayer,
       room: user.room.name,
       id: user.room.id,
       admin: user.room.admin,

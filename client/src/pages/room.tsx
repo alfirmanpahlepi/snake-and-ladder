@@ -13,6 +13,7 @@ interface Room {
   id: string,
   name: string,
   admin: string,
+  maxPlayer: number,
 }
 
 interface User {
@@ -50,7 +51,7 @@ export default function Room() {
       <div className="p-5 h-full w-full flex space-x-7">
         <div className="flex-[2.5] border p-5 flex flex-col space-y-5 bg-gray-50/50 z-20">
           <div className="h-1/2">
-            <Settings />
+            <Settings currentPlayer={roomData.roomMate.length} />
           </div>
           <div className="h-1/2 p-3 flex justify-center items-center space-x-5">
             {

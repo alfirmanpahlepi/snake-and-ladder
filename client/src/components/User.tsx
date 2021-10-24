@@ -5,6 +5,7 @@ interface Room {
     name: string,
     id: string,
     admin: string,
+    maxPlayer: number,
 }
 
 interface UserProps {
