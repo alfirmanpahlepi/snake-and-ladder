@@ -18,6 +18,8 @@ interface UserProps {
 }
 
 export default function Player({ user }: UserProps) {
+    console.log(user);
+    
     const { name } = useGlobalState()
 
     const kickUser = () => {
@@ -36,6 +38,12 @@ export default function Player({ user }: UserProps) {
                         className={`${user.name !== user.room.admin && "group-hover:inline"} absolute -top-3 -right-1 font-extrabold text-red-700 text-lg hidden`}>
                         x
                     </button>
+                }
+                {
+                    user.isReady &&
+                    <div className="absolute -bottom-2 w-full grid place-items-center">
+                        <span className="bg-green-700 text-white text-xs text-center rounded-md px-3">Ready</span>
+                    </div>
                 }
             </div>
             <h6 className="font-semibold">{user.name}</h6>

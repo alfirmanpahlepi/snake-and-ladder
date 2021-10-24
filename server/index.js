@@ -145,6 +145,13 @@ io.on("connect", (socket) => {
       : (users[userIndex].isReady = true);
 
     io.emit("users", { users });
+    
+    io.to(user.room.id).emit("roomData", {
+      room: user.room.name,
+      id: user.room.id,
+      admin: user.room.admin,
+      roomMate: getUsersInRoom(user.room.id),
+    });
 
     callback();
   });
