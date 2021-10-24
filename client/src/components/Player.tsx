@@ -1,7 +1,7 @@
 interface UserProps {
     user: {
-        name: String,
-        id: String
+        name: string,
+        id: string
     }
 }
 

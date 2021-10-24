@@ -3,13 +3,13 @@ import { createContext, useContext, useState } from "react";
 import "../styles/globals.css";
 
 interface Room {
-  id: String,
-  name: String
+  id: string,
+  name: string
 }
 
 interface User {
-  name: String,
-  id: String
+  name: string,
+  id: string
   room: Room
 }
 
@@ -17,7 +17,7 @@ type Users = User[]
 
 interface GlobalState {
   users: Users,
-  name: String,
+  name: string,
   setUsers: Function
   setName: Function,
 }

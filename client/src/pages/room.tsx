@@ -9,13 +9,13 @@ import { useGlobalState } from "./_app";
 import socket from "@/config/socket";
 
 interface Room {
-  id: String,
-  name: String
+  id: string,
+  name: string
 }
 
 interface User {
-  name: String,
-  id: String
+  name: string,
+  id: string
   room: Room
 }
 

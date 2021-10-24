@@ -2,14 +2,14 @@ import socket from "@/config/socket"
 import { useState } from "react"
 
 interface Room {
-    name: String,
-    id: String
+    name: string,
+    id: string
 }
 
 interface UserProps {
     user: {
-        id: String
-        name: String,
+        id: string
+        name: string,
         room: Room
     }
 }
@@ -31,9 +31,9 @@ export default function User({ user }: UserProps) {
     return (
         <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-                <div style={{ backgroundColor: "#" + ((1 << 24) * Math.random() | 0).toString(16) }} className="h-10 w-10 rounded-full flex justify-center items-center">
+                <span style={{ backgroundColor: "#" + ((1 << 24) * Math.random() | 0).toString(16) }} className="h-10 w-10 rounded-full flex justify-center items-center">
                     {user.name[0]}
-                </div>
+                </span>
                 <p className="font-semibold">{user.name}</p>
             </div>
             <button

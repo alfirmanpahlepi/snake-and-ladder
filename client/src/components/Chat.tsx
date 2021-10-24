@@ -25,8 +25,8 @@ export default function Chat() {
         <div className="flex flex-col h-full w-full">
             <div className="flex-grow overflow-auto border bg-white/50">
                 {
-                    messages.map((msg: Message, i: number) => (
-                        <p key={i}>{msg?.user} : {msg?.text}</p>
+                    messages.map((msg: Message, i: number): any => (
+                        <p key={i}>{msg.user} : {msg.text}</p>
                     ))
                 }
             </div>
