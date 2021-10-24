@@ -11,9 +11,8 @@ export default function Chat() {
 
 
     useEffect(() => {
-        socket.on("message", ({ text, user }: Message) => {
-            setMessages((msg): any => [...msg, { text, user }])
-        })
+        socket.on("message", ({ text, user }: Message) => setMessages((msg): any => [...msg, { text, user }]))
+        return () => setMessages([])
     }, [])
 
     const sendMessage = (e: any) => {

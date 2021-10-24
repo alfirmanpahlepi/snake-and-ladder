@@ -33,7 +33,10 @@ export default function Room() {
     if (!name || !query.name || !query.id) replace("/")
     else {
       socket.emit("join", { roomName: query.name, roomId: query.id }, (erorr: string): void => {
-        if (erorr) alert(erorr)
+        if (erorr) {
+          replace("/");
+          alert(erorr);
+        }
       })
     }
   }, [])
@@ -49,7 +52,6 @@ export default function Room() {
 
     return () => setRoomData({ room: "", roomMate: [], admin: "", id: "", maxPlayer: 0 })
   }, [])
-
 
   return (
     <Layout blur={true}>
@@ -75,7 +77,7 @@ export default function Room() {
           </div>
         </div>
         <div className="flex-1 border px-5 overflow-auto bg-gray-50/50 z-20">
-          <h4 className="font-bold text-2xl border-b-2 py-3">online users: 100</h4>
+          <h4 className="font-bold text-2xl border-b-2 py-3">online users: {users.length}</h4>
           <div className="py-3 space-y-3">
             {
               users.map((user: User, i: number) => (

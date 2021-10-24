@@ -60,14 +60,19 @@ io.on("connect", (socket) => {
 
     const usersInRoom = getUsersInRoom(roomId);
 
-    if (usersInRoom.length)
+    // console.log(use.room.maxPlayer,get);
+
+    if (usersInRoom.length) {
+      if (usersInRoom[0].room.maxPlayer == usersInRoom.length)
+        return callback("room is full");
+
       users[userIndex].room = {
         name: roomName,
         id: roomId,
         admin: usersInRoom[0].room.admin,
-        maxPlayer: 5,
+        maxPlayer: usersInRoom[0].room.maxPlayer,
       };
-    else
+    } else
       users[userIndex].room = {
         name: roomName,
         id: roomId,
