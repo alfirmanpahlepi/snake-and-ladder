@@ -19,7 +19,6 @@ interface UserProps {
 }
 
 export default function Player({ user }: UserProps) {
-    console.log(user);
     
     const { name } = useGlobalState()
 

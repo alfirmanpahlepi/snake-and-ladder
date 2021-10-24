@@ -25,9 +25,9 @@ interface User {
 }
 
 export default function Room() {
-  const { replace, query, reload } = useRouter()
+  const { replace, query, reload, push } = useRouter()
   const { name, users } = useGlobalState()
-  const [roomData, setRoomData] = useState({ room: "", roomMate: [], id: "", admin: "" })
+  const [roomData, setRoomData] = useState({ room: "", roomMate: [], id: "", admin: "", maxPlayer: 0 })
 
   useEffect(() => {
     if (!name || !query.name || !query.id) replace("/")
@@ -39,12 +39,17 @@ export default function Room() {
   }, [])
 
   useEffect(() => {
-    socket.on("roomData", ({ room, roomMate, id, admin }) => setRoomData({ room, roomMate, id, admin }))
+    socket.on("roomData", ({ room, roomMate, id, admin, maxPlayer }) => {
+      setRoomData({ room, roomMate, id, admin, maxPlayer })
+      const readyPlayer = roomMate.filter((user: User) => user.isReady).length
+      if (readyPlayer == maxPlayer) push("/play")
+    })
 
     socket.on("kicked", reload)
 
-    return () => setRoomData({ room: "", roomMate: [], admin: "", id: "" })
+    return () => setRoomData({ room: "", roomMate: [], admin: "", id: "", maxPlayer: 0 })
   }, [])
+
 
   return (
     <Layout blur={true}>

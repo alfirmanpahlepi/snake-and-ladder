@@ -3,10 +3,12 @@ import { useGlobalState } from "@/pages/_app"
 
 export default function Settings({ currentPlayer }: { currentPlayer: number }) {
     const { name, users } = useGlobalState()
-    const maxPlayer = users.find((user) => user.name === name)?.room.maxPlayer
+    const maxPlayer: any = users.find((user) => user.name === name)?.room.maxPlayer
+    const userIndex: number = users.findIndex((user) => user.name === name)
+    const isAdmin: boolean = users[userIndex].room.admin === name
 
     const setMaxPlayer = (e: any) => {
-        if (currentPlayer <= e.target.value)
+        if (currentPlayer <= e.target.value && isAdmin)
             socket.emit("settings", { maxPlayer: e.target.value }, (error: string) => { if (error) alert(error) })
     }
     return (
