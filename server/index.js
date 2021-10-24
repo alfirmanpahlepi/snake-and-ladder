@@ -41,6 +41,7 @@ io.on("connect", (socket) => {
       id: socket.id,
       room: { name: "", id: "", admin: "" },
       color: "#" + (((1 << 24) * Math.random()) | 0).toString(16),
+      isReady: false,
     });
 
     io.emit("users", { users });
@@ -128,6 +129,22 @@ io.on("connect", (socket) => {
       user: "system",
       text: `${target.name} has kicked by ${user.name}!`,
     });
+
+    callback();
+  });
+
+  socket.on("toggleReady", (callback) => {
+    const user = getUserById(socket.id);
+
+    if (!user) return callback("forbidden");
+
+    const userIndex = users.findIndex((u) => u.id === user.id);
+
+    user.isReady
+      ? (users[userIndex].isReady = false)
+      : (users[userIndex].isReady = true);
+
+    io.emit("users", { users });
 
     callback();
   });

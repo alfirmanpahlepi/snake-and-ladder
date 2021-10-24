@@ -13,6 +13,7 @@ interface User {
   id: string,
   room: Room,
   color: string,
+  isReady: boolean,
 }
 
 type Users = User[]

@@ -12,7 +12,8 @@ interface UserProps {
         name: string,
         id: string,
         room: Room,
-        color: string
+        color: string,
+        isReady: boolean,
     }
 }
 

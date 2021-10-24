@@ -3,7 +3,8 @@ import { useState } from "react"
 
 interface Room {
     name: string,
-    id: string
+    id: string,
+    admin: string,
 }
 
 interface UserProps {
@@ -11,7 +12,8 @@ interface UserProps {
         id: string,
         name: string,
         room: Room,
-        color: string
+        color: string,
+        isReady: boolean,
     }
 }
 

@@ -1,12 +1,13 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useGlobalState } from "./_app";
 import Chat from "@/components/Chat";
 import Layout from "@/components/Layout";
 import Player from "@/components/Player";
 import Settings from "@/components/Settings";
 import User from "@/components/User";
-import { useGlobalState } from "./_app";
 import socket from "@/config/socket";
+import ToggleReady from "@/components/ToggleReady";
 
 interface Room {
   id: string,
@@ -19,6 +20,7 @@ interface User {
   id: string,
   room: Room,
   color: string,
+  isReady: boolean,
 }
 
 export default function Room() {
@@ -59,7 +61,7 @@ export default function Room() {
           </div>
           <div className="h-1/2 p-5 flex space-x-5">
             <div className="w-1/2 grid place-items-center">
-              <button className="h-[200px] w-[200px] bg-green-500 hover:bg-green-600 active:bg-green-400 border-4 border-green-600 active:border-green-400 shadow-lg rounded-full text-white flex justify-center items-center text-4xl font-bold uppercase tracking-widest duration-500">ready</button>
+              <ToggleReady />
             </div>
             <div className="w-1/2">
               <Chat />
