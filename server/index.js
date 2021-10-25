@@ -19,12 +19,6 @@ app.use(
 
 let users = [];
 
-// const user = {
-//     name:"",
-//     id:"",
-//     room:{ name:"", id:"" }
-// }
-
 const getUserById = (id) => users.find((user) => user.id === id);
 
 const getUsersInRoom = (roomId) =>
@@ -193,6 +187,26 @@ io.on("connect", (socket) => {
     });
 
     callback();
+  });
+
+  socket.on("play", ({ movement }, callback) => {
+    const user = getUserById(socket.id);
+
+    if (!user) return callback("user not found");
+
+    const roomMate = users.filter((u) => u.room.id === user.room.id);
+
+    const userIndexInRoom = roomMate.findIndex((u) => u.id === socket.id);
+
+    const nextIndexPlayer =
+      userIndexInRoom < roomMate.length - 1 ? userIndexInRoom + 1 : 0;
+
+    io.to(user.room.id).emit("play", {
+      movement,
+      username: user.name,
+      color: roomMate[nextIndexPlayer].color,
+      nextPlayer: roomMate[nextIndexPlayer].name,
+    });
   });
 
   socket.on("disconnect", () => {
