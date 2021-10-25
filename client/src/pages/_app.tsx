@@ -18,6 +18,7 @@ interface User {
 }
 
 type Users = User[]
+type IUsers = User[]
 
 interface GlobalState {
   users: Users,
@@ -26,11 +27,11 @@ interface GlobalState {
   setName: Function,
 }
 
-const globalState: any = createContext({})
+const globalState: any = createContext<Partial<GlobalState>>({})
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [name, setName] = useState("")
-  const [users, setUsers] = useState([])
+  const [name, setName] = useState<string>("")
+  const [users, setUsers] = useState<IUsers | User[]>([])
 
   return <globalState.Provider value={{ name, setName, users, setUsers }}>
     <Component {...pageProps} id="component" />

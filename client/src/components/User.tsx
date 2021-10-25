@@ -18,8 +18,8 @@ interface UserProps {
     }
 }
 
-export default function User({ user }: UserProps) {
-    const [isDisable, setDisable] = useState(false)
+export default function User({ user }: UserProps): JSX.Element {
+    const [isDisable, setDisable] = useState<boolean>(false)
 
     const inviteUser = (): void => {
         setDisable(true)

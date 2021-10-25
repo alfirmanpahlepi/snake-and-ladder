@@ -5,7 +5,7 @@ import { useGlobalState } from "./_app";
 import uuid from "uuid-v4";
 import socket from "@/config/socket";
 
-export default function Home() {
+export default function Home(): JSX.Element {
   const { push } = useRouter()
   const { name, setName, setUsers } = useGlobalState()
 

@@ -1,10 +1,10 @@
 import socket from "@/config/socket"
 import { useGlobalState } from "@/pages/_app"
 
-export default function ToggleReady() {
+export default function ToggleReady(): JSX.Element {
     const { name, users } = useGlobalState()
-    const toggleReady = () => socket.emit("toggleReady", (error: string) => { if (error) alert(error) })
-    const isReady = users.find((user) => user.name === name)?.isReady
+    const toggleReady = (): any => socket.emit("toggleReady", (error: string) => { if (error) alert(error) })
+    const isReady: any = users.find((user) => user.name === name)?.isReady
 
     return (
         <button

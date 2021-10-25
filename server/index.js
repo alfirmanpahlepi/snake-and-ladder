@@ -106,6 +106,8 @@ io.on("connect", (socket) => {
   socket.on("sendMessage", ({ message }, callback) => {
     const user = getUserById(socket.id);
 
+    if (!user) return;
+
     io.to(user.room.id).emit("message", {
       user: user.name,
       text: message,

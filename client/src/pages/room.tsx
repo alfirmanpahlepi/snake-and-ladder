@@ -24,7 +24,7 @@ interface User {
   isReady: boolean,
 }
 
-export default function Room() {
+export default function Room(): JSX.Element {
   const { replace, query, reload, push } = useRouter()
   const { name, users } = useGlobalState()
   const [roomData, setRoomData] = useState({ room: "", roomMate: [], id: "", admin: "", maxPlayer: 0 })
@@ -44,7 +44,7 @@ export default function Room() {
   useEffect(() => {
     socket.on("roomData", ({ room, roomMate, id, admin, maxPlayer }) => {
       setRoomData({ room, roomMate, id, admin, maxPlayer })
-      const readyPlayer = roomMate.filter((user: User) => user.isReady).length
+      const readyPlayer: User | number = roomMate.filter((user: User) => user.isReady).length
       if (readyPlayer == maxPlayer) push("/play")
     })
 

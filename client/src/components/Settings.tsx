@@ -1,20 +1,21 @@
 import socket from "@/config/socket"
 import { useGlobalState } from "@/pages/_app"
+import { ChangeEvent } from "react"
 
-export default function Settings({ currentPlayer }: { currentPlayer: number }) {
+export default function Settings({ currentPlayer }: { currentPlayer: number }): JSX.Element {
     const { name, users } = useGlobalState()
     const maxPlayer: any = users.find((user) => user.name === name)?.room.maxPlayer
     const userIndex: number = users.findIndex((user) => user.name === name)
     const isAdmin: boolean = users[userIndex]?.room.admin === name
 
-    const setMaxPlayer = (e: any) => {
-        if (currentPlayer <= e.target.value && isAdmin)
+    const setMaxPlayer = (e: ChangeEvent<HTMLSelectElement>): void => {
+        if (!!currentPlayer <= !!e.target.value && isAdmin)
             socket.emit("settings", { maxPlayer: e.target.value }, (error: string) => { if (error) alert(error) })
     }
     return (
         <div className="h-full w-full">
             <p className="text-right">number of player :
-                <select onChange={(e) => setMaxPlayer(e)} value={maxPlayer}>
+                <select onChange={(e: ChangeEvent<HTMLSelectElement>) => setMaxPlayer(e)} value={maxPlayer}>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>

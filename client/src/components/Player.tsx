@@ -18,11 +18,11 @@ interface UserProps {
     }
 }
 
-export default function Player({ user }: UserProps) {
-    
+export default function Player({ user }: UserProps): JSX.Element {
+
     const { name } = useGlobalState()
 
-    const kickUser = () => {
+    const kickUser = (): void => {
         socket.emit("kickUser", { target: user }, (error: string) => { if (error) alert(error) })
     }
 
