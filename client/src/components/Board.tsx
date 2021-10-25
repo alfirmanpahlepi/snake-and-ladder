@@ -1,13 +1,15 @@
-interface BoardProps { movements: { username: string, movement: number, color: string }[] }[]
+interface User { username: string, movement: number, color: string }
 
-export default function Board({ movements }: BoardProps) {
+interface BoardProps { movements: User[] }[]
+
+export default function Board({ movements }: BoardProps): JSX.Element {
     return (
         <div className="w-[600px] h-[600px] z-20 bg-white/20 relative bg-cover grid grid-cols-10 p-6" style={{ backgroundImage: "url('/board.png')" }}>
             {
-                grids(100).map((grid, idx) => (
+                grids(100).map((grid: number, idx: number) => (
                     <div key={idx} className="flex justify-center items-center">
                         <div className="h-10 w-10 rounded-full flex items-center justify-center">
-                            {movements.map((user, i) => (
+                            {movements.map((user: User, i: number) => (
                                 user.movement === grid &&
                                 <span
                                     key={i}
@@ -24,7 +26,7 @@ export default function Board({ movements }: BoardProps) {
     )
 }
 
-const grids = (num: number) => {
+const grids = (num: number): number[] => {
     const arr = []
     const temp = []
     for (let i = num; i >= 1; i--) {
