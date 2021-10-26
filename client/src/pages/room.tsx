@@ -15,8 +15,8 @@ export default function Room(): JSX.Element {
   const { name, users } = useGlobalState()
   const [roomMate, setRoomMate] = useState<IUsers>([])
 
-  useEffect(() => {
-    if (!name || !query.name || !query.id) replace("/")
+  useEffect((): any => {
+    if (!name || !query.name || !query.id || !users.length) return replace("/")
     else {
       socket.emit("join", { roomName: query.name, roomId: query.id }, (erorr: string): void => {
         if (erorr) {

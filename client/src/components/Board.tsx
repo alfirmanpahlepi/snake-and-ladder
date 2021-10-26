@@ -7,14 +7,14 @@ export default function Board({ movements }: BoardProps): JSX.Element {
         <div className="w-[600px] h-[600px] z-20 bg-white/20 relative bg-cover grid grid-cols-10 p-6" style={{ backgroundImage: "url('/board.png')" }}>
             {
                 grids(100).map((grid: number, idx: number) => (
-                    <div key={idx} className="flex justify-center items-center">
-                        <div className="h-10 w-10 rounded-full flex items-center justify-center">
+                    <div key={idx} className="flex justify-center items-center relative">
+                        <div className="h-10 w-10 rounded-full flex items-center justify-center absolute">
                             {movements.map((user: Movement, i: number) => (
                                 user.movement === grid &&
                                 <span
                                     key={i}
                                     style={{ backgroundColor: user.color }}
-                                    className="h-10 w-10 rounded-full border-2 border-gray-200 grid place-items-center font-semibold uppercase">
+                                    className="absolute h-10 w-10 rounded-full border-2 border-gray-200 grid place-items-center font-semibold uppercase">
                                     {user.username[0]}
                                 </span>
                             ))}
