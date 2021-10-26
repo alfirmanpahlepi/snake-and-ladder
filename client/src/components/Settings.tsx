@@ -1,25 +1,9 @@
 import { ChangeEvent } from "react"
+import { Users } from "@/types"
 import socket from "@/config/socket"
 import { useGlobalState } from "@/pages/_app"
 
-interface Room {
-    id: string,
-    name: string,
-    admin: string,
-    maxPlayer: number,
-}
-
-interface User {
-    name: string,
-    id: string,
-    room: Room,
-    color: string,
-    isReady: boolean,
-}
-
-type IRoomMate = User[]
-
-interface SettingsProps { roomMate: IRoomMate }
+interface SettingsProps { roomMate: Users }
 
 export default function Settings({ roomMate }: SettingsProps): JSX.Element {
     const { name } = useGlobalState()
@@ -29,12 +13,12 @@ export default function Settings({ roomMate }: SettingsProps): JSX.Element {
 
     const setMaxPlayer = (e: ChangeEvent<HTMLSelectElement>): void => {
         if (currentPlayer <= parseInt(e.target.value) && isAdmin)
-            socket.emit("settings", { maxPlayer: e.target.value }, (error: string) => { if (error) alert(error) })
+            socket.emit("settings", { maxPlayer: e.target.value }, (error: string): void => { if (error) alert(error) })
     }
     return (
         <div className="h-full w-full">
             <p className="text-right">number of player :
-                <select onChange={(e: ChangeEvent<HTMLSelectElement>) => setMaxPlayer(e)} value={maxPlayer}>
+                <select onChange={(e: ChangeEvent<HTMLSelectElement>): void => setMaxPlayer(e)} value={maxPlayer}>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>

@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react"
+import { useGlobalState } from "./_app"
+import { IMovements, Movements, Movement } from "@/types"
+import socket from "@/config/socket"
 import Board from "@/components/Board"
 import Chat from "@/components/Chat"
 import Layout from "@/components/Layout"
-import { useGlobalState } from "./_app"
-import socket from "@/config/socket"
-
-type IMovements = { username: string, movement: number, color: string }[]
 
 export default function Play(): JSX.Element {
     const [dice1, setDice1] = useState<number>(6)
@@ -34,7 +33,7 @@ export default function Play(): JSX.Element {
         }, 50);
 
         setTimeout(() => {
-            socket.emit("play", { movement: random1 + random2 }, (error: string) => { if (error) return alert(error) })
+            socket.emit("play", { movement: random1 + random2 }, (error: string): void => { if (error) return alert(error) })
         }, 2000);
     }
 
@@ -47,12 +46,12 @@ export default function Play(): JSX.Element {
     }, [])
 
     useEffect(() => {
-        socket.on("play", ({ username, movement, nextPlayer, color }) => {
-            setMovements((crr: IMovements): IMovements => {
+        socket.on("play", ({ username, movement, nextPlayer, color }: Movement): void => {
+            setMovements((crr: Movements): Movements => {
                 const userIndex: number = crr.findIndex((u) => u.username === username)
                 if (userIndex === -1) return [...crr, { movement, username, color }]
                 else {
-                    const arr: IMovements = crr
+                    const arr: Movements = crr
                     arr[userIndex].movement += movement
                     return arr
                 }

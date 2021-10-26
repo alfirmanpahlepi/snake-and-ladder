@@ -1,6 +1,6 @@
-interface User { username: string, movement: number, color: string }
+import { Movement, Movements } from "@/types"
 
-interface BoardProps { movements: User[] }[]
+interface BoardProps { movements: Movements }
 
 export default function Board({ movements }: BoardProps): JSX.Element {
     return (
@@ -9,7 +9,7 @@ export default function Board({ movements }: BoardProps): JSX.Element {
                 grids(100).map((grid: number, idx: number) => (
                     <div key={idx} className="flex justify-center items-center">
                         <div className="h-10 w-10 rounded-full flex items-center justify-center">
-                            {movements.map((user: User, i: number) => (
+                            {movements.map((user: Movement, i: number) => (
                                 user.movement === grid &&
                                 <span
                                     key={i}

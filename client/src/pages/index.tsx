@@ -1,8 +1,9 @@
-import { useRouter } from "next/router"
 import { useEffect } from "react";
+import { useRouter } from "next/router"
 import uuid from "uuid-v4";
-import socket from "@/config/socket";
 import { useGlobalState } from "./_app";
+import { Users } from "@/types";
+import socket from "@/config/socket";
 import Layout from "@/components/Layout";
 
 export default function Home(): JSX.Element {
@@ -17,14 +18,14 @@ export default function Home(): JSX.Element {
         return window.location.reload()
       } else {
         setName(newName)
-        socket.emit("online", { name: newName }, (error: string) => { if (error) return alert(error) })
+        socket.emit("online", { name: newName }, (error: string): void => { if (error) return alert(error) })
       }
     }
   }, [])
 
   useEffect(() => {
-    socket.on("users", ({ users }) => setUsers(users))
-    socket.on("invite", ({ roomName, roomId }) => {
+    socket.on("users", ({ users }: { users: Users }): void => setUsers(users))
+    socket.on("invite", ({ roomName, roomId }: { roomName: string, roomId: string }): void => {
       alert(`you have been invited to room ${roomName}`)
       if (confirm("do you accept ?")) push(`/room?name=${roomName}&id=${roomId}`)
     })

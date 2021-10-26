@@ -1,35 +1,19 @@
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useGlobalState } from "./_app";
+import { IUsers, User, Users } from "@/types";
+import socket from "@/config/socket";
 import Chat from "@/components/Chat";
 import Layout from "@/components/Layout";
 import Player from "@/components/Player";
 import Settings from "@/components/Settings";
-import User from "@/components/User";
-import socket from "@/config/socket";
+import OnlineUser from "@/components/OnlineUser";
 import ToggleReady from "@/components/ToggleReady";
-
-interface Room {
-  id: string,
-  name: string,
-  admin: string,
-  maxPlayer: number,
-}
-
-interface User {
-  name: string,
-  id: string,
-  room: Room,
-  color: string,
-  isReady: boolean,
-}
-
-type IRoomMate = User[]
 
 export default function Room(): JSX.Element {
   const { replace, query, reload, push } = useRouter()
   const { name, users } = useGlobalState()
-  const [roomMate, setRoomMate] = useState<IRoomMate>([])
+  const [roomMate, setRoomMate] = useState<IUsers>([])
 
   useEffect(() => {
     if (!name || !query.name || !query.id) replace("/")
@@ -44,7 +28,7 @@ export default function Room(): JSX.Element {
   }, [])
 
   useEffect(() => {
-    socket.on("roomData", ({ roomMate }) => {
+    socket.on("roomData", ({ roomMate }: { roomMate: Users }): void => {
       setRoomMate(roomMate)
       const readyPlayer: number = roomMate.filter((user: User) => user.isReady).length
       const maxPlayer: number = roomMate[0].room.maxPlayer
@@ -84,7 +68,7 @@ export default function Room(): JSX.Element {
           <div className="py-3 space-y-3">
             {
               users.map((user: User, i: number) => (
-                <User key={i} user={user} />
+                <OnlineUser key={i} user={user} />
               ))
             }
           </div>

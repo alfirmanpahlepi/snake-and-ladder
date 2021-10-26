@@ -1,29 +1,13 @@
-import socket from "@/config/socket"
 import { useGlobalState } from "@/pages/_app"
+import { User } from "@/types"
+import socket from "@/config/socket"
 
-interface Room {
-    id: string,
-    name: string,
-    admin: string,
-    maxPlayer: number,
-}
-
-interface UserProps {
-    user: {
-        name: string,
-        id: string,
-        room: Room,
-        color: string,
-        isReady: boolean,
-    }
-}
+interface UserProps { user: User }
 
 export default function Player({ user }: UserProps): JSX.Element {
     const { name } = useGlobalState()
 
-    const kickUser = (): void => {
-        socket.emit("kickUser", { target: user }, (error: string) => { if (error) alert(error) })
-    }
+    const kickUser = (): void => socket.emit("kickUser", { target: user }, (error: string): void => { if (error) alert(error) })
 
     return (
         <div className="h-40 w-40 flex flex-col justify-center items-center space-y-3">

@@ -1,12 +1,6 @@
-import { ChangeEvent, FormEvent, ReactNode, useEffect, useState } from "react"
+import { ChangeEvent, FormEvent, useEffect, useState } from "react"
+import { IMessages, Message, Messages } from "@/types"
 import socket from "@/config/socket"
-
-interface Message {
-    user: string,
-    text: string,
-}
-
-type IMessages = Message[]
 
 export default function Chat(): JSX.Element {
     const [message, setMessage] = useState<string>()
@@ -14,26 +8,26 @@ export default function Chat(): JSX.Element {
 
 
     useEffect(() => {
-        socket.on("message", ({ text, user }: Message) => setMessages((msg): Message[] => [...msg, { text, user }]))
+        socket.on("message", ({ text, user }: Message): void => setMessages((msg): Messages => [...msg, { text, user }]))
         return () => setMessages([])
     }, [])
 
     const sendMessage = (e: FormEvent): void => {
         e.preventDefault()
-        if (message) socket.emit("sendMessage", { message }, () => setMessage(""))
+        if (message) socket.emit("sendMessage", { message }, (): void => setMessage(""))
     }
 
     return (
         <div className="flex flex-col h-full w-full">
             <div className="flex-grow overflow-auto border bg-white/50">
                 {
-                    messages.map((msg: Message, i: number): JSX.Element | JSX.Element[] => (
+                    messages.map((msg: Message, i: number): JSX.Element => (
                         <p key={i}>{msg.user} : {msg.text}</p>
                     ))
                 }
             </div>
-            <form onSubmit={(e: FormEvent) => sendMessage(e)} className="flex items-center mt-3 space-x-3">
-                <input value={message} onChange={(e: ChangeEvent<HTMLInputElement>) => setMessage(e.target.value)} className="flex-grow border bg-white/50" />
+            <form onSubmit={(e: FormEvent): void => sendMessage(e)} className="flex items-center mt-3 space-x-3">
+                <input value={message} onChange={(e: ChangeEvent<HTMLInputElement>): void => setMessage(e.target.value)} className="flex-grow border bg-white/50" />
                 <button type="submit" className="bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-400 text-white px-3">SEND</button>
             </form>
         </div>

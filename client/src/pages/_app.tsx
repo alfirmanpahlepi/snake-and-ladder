@@ -1,31 +1,7 @@
-import type { AppProps } from "next/app";
 import { createContext, useContext, useState } from "react";
+import type { AppProps } from "next/app";
+import { GlobalState, IUsers, User } from "@/types";
 import "../styles/globals.css";
-
-interface Room {
-  id: string,
-  name: string,
-  admin: string,
-  maxPlayer: number,
-}
-
-interface User {
-  name: string,
-  id: string,
-  room: Room,
-  color: string,
-  isReady: boolean,
-}
-
-type Users = User[]
-type IUsers = User[]
-
-interface GlobalState {
-  users: Users,
-  name: string,
-  setUsers: Function,
-  setName: Function,
-}
 
 const globalState: any = createContext<Partial<GlobalState>>({})
 

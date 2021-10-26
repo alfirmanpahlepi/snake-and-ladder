@@ -1,30 +1,16 @@
-import socket from "@/config/socket"
 import { useState } from "react"
+import { User } from "@/types"
+import socket from "@/config/socket"
 
-interface Room {
-    name: string,
-    id: string,
-    admin: string,
-    maxPlayer: number,
-}
+interface UserProps { user: User }
 
-interface UserProps {
-    user: {
-        id: string,
-        name: string,
-        room: Room,
-        color: string,
-        isReady: boolean,
-    }
-}
-
-export default function User({ user }: UserProps): JSX.Element {
+export default function OnlineUser({ user }: UserProps): JSX.Element {
     const [isDisable, setDisable] = useState<boolean>(false)
 
     const inviteUser = (): void => {
         setDisable(true)
         if (!user.room.id)
-            socket.emit("inviteUser", { target: user }, (error: string) => { if (error) alert(error) })
+            socket.emit("inviteUser", { target: user }, (error: string): void => { if (error) alert(error) })
 
         setTimeout(() => {
             setDisable(false)
