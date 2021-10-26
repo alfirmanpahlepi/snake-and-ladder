@@ -9,7 +9,7 @@ interface Message {
 type IMessages = Message[]
 
 export default function Chat(): JSX.Element {
-    const [message, setMessage] = useState<string>("")
+    const [message, setMessage] = useState<string>()
     const [messages, setMessages] = useState<IMessages>([])
 
 
@@ -27,7 +27,7 @@ export default function Chat(): JSX.Element {
         <div className="flex flex-col h-full w-full">
             <div className="flex-grow overflow-auto border bg-white/50">
                 {
-                    messages.map((msg: Message, i: number): ReactNode => (
+                    messages.map((msg: Message, i: number): JSX.Element | JSX.Element[] => (
                         <p key={i}>{msg.user} : {msg.text}</p>
                     ))
                 }

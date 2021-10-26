@@ -24,10 +24,12 @@ interface User {
   isReady: boolean,
 }
 
+type IRoomMate = User[]
+
 export default function Room(): JSX.Element {
   const { replace, query, reload, push } = useRouter()
   const { name, users } = useGlobalState()
-  const [roomData, setRoomData] = useState({ room: "", roomMate: [], id: "", admin: "", maxPlayer: 0 })
+  const [roomMate, setRoomMate] = useState<IRoomMate>([])
 
   useEffect(() => {
     if (!name || !query.name || !query.id) replace("/")
@@ -42,15 +44,16 @@ export default function Room(): JSX.Element {
   }, [])
 
   useEffect(() => {
-    socket.on("roomData", ({ room, roomMate, id, admin, maxPlayer }) => {
-      setRoomData({ room, roomMate, id, admin, maxPlayer })
-      const readyPlayer: User | number = roomMate.filter((user: User) => user.isReady).length
+    socket.on("roomData", ({ roomMate }) => {
+      setRoomMate(roomMate)
+      const readyPlayer: number = roomMate.filter((user: User) => user.isReady).length
+      const maxPlayer: number = roomMate[0].room.maxPlayer
       if (readyPlayer == maxPlayer) push("/play")
     })
 
     socket.on("kicked", reload)
 
-    return () => setRoomData({ room: "", roomMate: [], admin: "", id: "", maxPlayer: 0 })
+    return () => setRoomMate([])
   }, [])
 
   return (
@@ -58,18 +61,18 @@ export default function Room(): JSX.Element {
       <div className="p-5 h-full w-full flex space-x-7">
         <div className="flex-[2.5] border p-5 flex flex-col space-y-5 bg-gray-50/50 z-20">
           <div className="h-1/2">
-            <Settings currentPlayer={roomData.roomMate.length} />
+            <Settings roomMate={roomMate} />
           </div>
           <div className="h-1/2 p-3 flex justify-center items-center space-x-5">
             {
-              roomData.roomMate.map((user: User, i: number) => (
+              roomMate.map((user: User, i: number) => (
                 <Player key={i} user={user} />
               ))
             }
           </div>
           <div className="h-1/2 p-5 flex space-x-5">
             <div className="w-1/2 grid place-items-center">
-              <ToggleReady />
+              <ToggleReady roomMate={roomMate} />
             </div>
             <div className="w-1/2">
               <Chat />

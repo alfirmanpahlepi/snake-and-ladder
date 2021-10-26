@@ -1,9 +1,9 @@
-import Layout from "@/components/Layout";
 import { useRouter } from "next/router"
 import { useEffect } from "react";
-import { useGlobalState } from "./_app";
 import uuid from "uuid-v4";
 import socket from "@/config/socket";
+import { useGlobalState } from "./_app";
+import Layout from "@/components/Layout";
 
 export default function Home(): JSX.Element {
   const { push } = useRouter()

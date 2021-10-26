@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 
 const ENDPOINT: string = "http://localhost:5000";
-const socket = io(ENDPOINT);
+const socket: any = io(ENDPOINT);
 
 export default socket;

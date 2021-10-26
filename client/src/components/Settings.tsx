@@ -1,15 +1,34 @@
+import { ChangeEvent } from "react"
 import socket from "@/config/socket"
 import { useGlobalState } from "@/pages/_app"
-import { ChangeEvent } from "react"
 
-export default function Settings({ currentPlayer }: { currentPlayer: number }): JSX.Element {
-    const { name, users } = useGlobalState()
-    const maxPlayer: any = users.find((user) => user.name === name)?.room.maxPlayer
-    const userIndex: number = users.findIndex((user) => user.name === name)
-    const isAdmin: boolean = users[userIndex]?.room.admin === name
+interface Room {
+    id: string,
+    name: string,
+    admin: string,
+    maxPlayer: number,
+}
+
+interface User {
+    name: string,
+    id: string,
+    room: Room,
+    color: string,
+    isReady: boolean,
+}
+
+type IRoomMate = User[]
+
+interface SettingsProps { roomMate: IRoomMate }
+
+export default function Settings({ roomMate }: SettingsProps): JSX.Element {
+    const { name } = useGlobalState()
+    const currentPlayer: number = roomMate.length
+    const maxPlayer: number = roomMate[0]?.room.maxPlayer
+    const isAdmin: boolean = roomMate[0]?.room.admin === name
 
     const setMaxPlayer = (e: ChangeEvent<HTMLSelectElement>): void => {
-        if (!!currentPlayer <= !!e.target.value && isAdmin)
+        if (currentPlayer <= parseInt(e.target.value) && isAdmin)
             socket.emit("settings", { maxPlayer: e.target.value }, (error: string) => { if (error) alert(error) })
     }
     return (

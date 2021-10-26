@@ -11,7 +11,7 @@ export default function Play(): JSX.Element {
     const [dice1, setDice1] = useState<number>(6)
     const [dice2, setDice2] = useState<number>(6)
     const [movements, setMovements] = useState<IMovements>([])
-    const [nowPlayer, setNowPlayer] = useState<string>("")
+    const [nowPlayer, setNowPlayer] = useState<string>()
 
     const { name, users } = useGlobalState()
 
@@ -60,8 +60,6 @@ export default function Play(): JSX.Element {
             setNowPlayer(nextPlayer)
         })
     }, [])
-
-    // console.log(movements);
 
     return (
         <Layout blur={true}>

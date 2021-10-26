@@ -1,10 +1,30 @@
 import socket from "@/config/socket"
 import { useGlobalState } from "@/pages/_app"
 
-export default function ToggleReady(): JSX.Element {
-    const { name, users } = useGlobalState()
-    const toggleReady = (): any => socket.emit("toggleReady", (error: string) => { if (error) alert(error) })
-    const isReady: any = users.find((user) => user.name === name)?.isReady
+interface Room {
+    id: string,
+    name: string,
+    admin: string,
+    maxPlayer: number,
+}
+
+interface User {
+    name: string,
+    id: string,
+    room: Room,
+    color: string,
+    isReady: boolean,
+}
+
+type IRoomMate = User[]
+
+interface SettingsProps { roomMate: IRoomMate }
+
+export default function ToggleReady({ roomMate }: SettingsProps): JSX.Element {
+    const { name } = useGlobalState()
+    const isReady: any | boolean = roomMate.find((user) => user.name === name)?.isReady
+
+    const toggleReady = (): void => { socket.emit("toggleReady", (error: string) => { if (error) alert(error) }) }
 
     return (
         <button

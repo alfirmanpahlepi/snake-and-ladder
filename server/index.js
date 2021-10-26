@@ -85,10 +85,6 @@ io.on("connect", (socket) => {
       .emit("message", { user: "system", text: `${user.name} has joined!` });
 
     io.to(user.room.id).emit("roomData", {
-      maxPlayer: user.room.maxPlayer,
-      room: user.room.name,
-      id: user.room.id,
-      admin: user.room.admin,
       roomMate: getUsersInRoom(user.room.id),
     });
 
@@ -153,10 +149,6 @@ io.on("connect", (socket) => {
     io.emit("users", { users });
 
     io.to(user.room.id).emit("roomData", {
-      maxPlayer: user.room.maxPlayer,
-      room: user.room.name,
-      id: user.room.id,
-      admin: user.room.admin,
       roomMate: getUsersInRoom(user.room.id),
     });
 
@@ -179,10 +171,6 @@ io.on("connect", (socket) => {
     io.emit("users", { users });
 
     io.to(user.room.id).emit("roomData", {
-      maxPlayer: maxPlayer,
-      room: user.room.name,
-      id: user.room.id,
-      admin: user.room.admin,
       roomMate: getUsersInRoom(user.room.id),
     });
 
@@ -227,10 +215,6 @@ io.on("connect", (socket) => {
     });
     // room data
     io.to(user.room.id).emit("roomData", {
-      maxPlayer: user.room.maxPlayer,
-      room: user.room.name,
-      id: user.room.id,
-      admin: user.room.admin,
       roomMate: getUsersInRoom(user.room.id),
     });
     // users data

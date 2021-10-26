@@ -19,7 +19,6 @@ interface UserProps {
 }
 
 export default function Player({ user }: UserProps): JSX.Element {
-
     const { name } = useGlobalState()
 
     const kickUser = (): void => {
