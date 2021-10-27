@@ -89,6 +89,7 @@ export default function Play(): JSX.Element {
             })
             setNowPlayer(nextPlayer)
         })
+        return () => { setNowPlayer(""); setPlayers([]); }
     }, [])
 
     return (
