@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router"
-import uuid from "uuid-v4";
+import { uuid } from "uuidv4";
 import { useGlobalState } from "./_app";
 import { Users } from "@/types";
 import socket from "@/config/socket";

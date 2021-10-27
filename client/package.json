@@ -7,11 +7,10 @@
     },
     "dependencies": {
         "next": "latest",
-        "next-images": "^1.8.1",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "socket.io-client": "^4.3.2",
-        "uuid-v4": "^0.1.0"
+        "uuidv4": "^6.2.12"
     },
     "devDependencies": {
         "@types/node": "^16.7.10",
