@@ -3,6 +3,7 @@ interface Room {
   name: string;
   admin: string;
   maxPlayer: number;
+  winner: string[];
 }
 
 export interface User {
@@ -23,14 +24,6 @@ export interface GlobalState {
   setName: Function;
 }
 
-export interface Movement {
-  username: string;
-  movement: number;
-  color: string;
-  nextPlayer?: string;
-}
-[];
-
 export interface Message {
   user: string;
   text: string;
@@ -39,5 +32,12 @@ export interface Message {
 export type IMessages = Message[];
 export type Messages = Message[];
 
-export type Movements = Movement[];
-export type IMovements = Movement[];
+export interface Player {
+  username: string;
+  grid: number;
+  color: string;
+  nextPlayer?: string;
+}
+
+export type Players = Player[];
+export type IPlayers = Player[];

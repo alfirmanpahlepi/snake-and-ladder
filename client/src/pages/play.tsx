@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react"
+import { useRouter } from "next/router"
 import { useGlobalState } from "./_app"
-import { IMovements, Movements, Movement } from "@/types"
+import { IPlayers, Players, Player } from "@/types"
 import socket from "@/config/socket"
 import Board from "@/components/Board"
 import Chat from "@/components/Chat"
 import Layout from "@/components/Layout"
-import { useRouter } from "next/router"
 
 export default function Play(): JSX.Element {
     const [dice1, setDice1] = useState<number>(6)
     const [dice2, setDice2] = useState<number>(6)
-    const [movements, setMovements] = useState<IMovements>([])
+    const [players, setPlayers] = useState<IPlayers>([])
     const [nowPlayer, setNowPlayer] = useState<string>()
+
     const { replace } = useRouter()
 
     const { name, users } = useGlobalState()
@@ -31,18 +32,41 @@ export default function Play(): JSX.Element {
             random2 = Math.floor(Math.random() * 6) + 1 // output : 1,2,3,4,5,6
             setDice1(random1)
             setDice2(random2)
-            // setResult(random1 + random2)
         }, 50);
 
         setTimeout(() => {
-            socket.emit("play", { movement: random1 + random2 }, (error: string): void => { if (error) return alert(error) })
+            let result: number = random1 + random2;
+            const user: Player | any = players.find((user) => user.username === name);
+            if (user) {
+                if (result + user.grid === 100) {
+                    socket.emit("win")
+                }
+                if (result + user.grid > 100) {
+                    /**
+                     * example of if grid > 100
+                     * 
+                     * user grid  = 98
+                     * movement   = 6
+                     * 
+                     * expect result => 99, 100, 99, 98, 97, 96
+                     */
+                    const gridNeeded: number = 100 - user.grid;
+                    const movement: number = result;
+                    result = 100 - (movement - gridNeeded)
+                }
+                else result += user.grid
+
+            }
+            socket.emit("play", { grid: result }, (error: string): void => { if (error) return alert(error) })
         }, 2000);
     }
 
     useEffect((): any => {
         if (!users.length || !name) return replace("/")
+
+        const userIndex: number = users?.findIndex((user) => user.name === name)
+
         if (!nowPlayer) {
-            const userIndex: number = users?.findIndex((user) => user.name === name)
             const admin: string = users[userIndex]?.room.admin
             setNowPlayer(admin)
         }
@@ -50,48 +74,21 @@ export default function Play(): JSX.Element {
     }, [])
 
     useEffect(() => {
-        socket.on("play", ({ username, movement, nextPlayer, color }: Movement): void => {
-            setMovements((crr: Movements): Movements => {
-                const userIndex: number = crr.findIndex((u) => u.username === username)
-                const arr: Movements = crr
-                if (userIndex === -1) {
-                    const grid: number = snakeAndLadder(movement)
+        socket.on("play", ({ username, grid, color, nextPlayer }: Player): void => {
+            setPlayers((crr: Players): Players => {
+                const userIndex: number = crr.findIndex((u) => u.username === username);
+                const arr: Players = crr;
 
-                    return [...arr, { movement: grid, username, color }]
-                }
+                if (userIndex === -1) return [...arr, { grid: snakeAndLadder(grid), username, color }];
+
                 else {
-                    const grid: number = snakeAndLadder(movement + arr[userIndex].movement)
-                    arr[userIndex].movement = grid
-
-
-                    if (grid > 100) {
-                        const prevGrid: number = grid - movement
-                        arr[userIndex].movement = 100 - (movement - (100 - prevGrid))
-                    }
-
-                    /**
-                     * example of if grid > 100
-                     * 
-                     * player in grid  = 98
-                     * movement        = 6
-                     * 
-                     * expect result => 99, 100, 99, 98, 97, 96
-                     */
-
+                    const result: number = snakeAndLadder(grid);
+                    arr[userIndex].grid = result;
                     return arr
                 }
-            });
-            // if player grid has 100 than he has won, and he doesnt need to play anymore
-            const playerIndex: number = movements.findIndex((user) => user.username === nextPlayer)
-            if (movements[playerIndex]?.movement === 100) {
-                if (playerIndex + 1 === movements.length) setNowPlayer(movements[0].username)
-                else setNowPlayer(movements[playerIndex + 1].username)
-            }
-            else setNowPlayer(nextPlayer)
-
-
+            })
+            setNowPlayer(nextPlayer)
         })
-        return () => { setNowPlayer(""); setMovements([]); }
     }, [])
 
     return (
@@ -119,7 +116,7 @@ export default function Play(): JSX.Element {
                         </button>
                     </div>
                 </div>
-                <Board movements={movements} />
+                <Board Players={players} />
             </div>
         </Layout>
     )
@@ -167,7 +164,7 @@ const snakeAndLadder = (grid: number): number => {
         case 80:
             return 99;
 
-        // ladder 
+        // snake 
         case 97:
             return 78;
         case 95:

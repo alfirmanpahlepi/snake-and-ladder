@@ -1,16 +1,16 @@
-import { Movement, Movements } from "@/types"
+import { Player, Players } from "@/types"
 
-interface BoardProps { movements: Movements }
+interface BoardProps { Players: Players }
 
-export default function Board({ movements }: BoardProps): JSX.Element {
+export default function Board({ Players }: BoardProps): JSX.Element {
     return (
         <div className="w-[600px] h-[600px] z-20 bg-white/20 relative bg-cover grid grid-cols-10 p-6" style={{ backgroundImage: "url('/board.png')" }}>
             {
                 grids(100).map((grid: number, idx: number) => (
                     <div key={idx} className="flex justify-center items-center relative">
                         <div className="h-10 w-10 rounded-full flex items-center justify-center absolute">
-                            {movements.map((user: Movement, i: number) => (
-                                user.movement === grid &&
+                            {Players.map((user: Player, i: number) => (
+                                user.grid === grid &&
                                 <span
                                     key={i}
                                     style={{ backgroundColor: user.color }}

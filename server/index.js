@@ -61,10 +61,11 @@ io.on("connect", (socket) => {
         return callback("room is full");
 
       users[userIndex].room = {
-        name: roomName,
-        id: roomId,
+        name: usersInRoom[0].room.name,
+        id: usersInRoom[0].room.id,
         admin: usersInRoom[0].room.admin,
         maxPlayer: usersInRoom[0].room.maxPlayer,
+        winner: usersInRoom[0].room.winner,
       };
     } else
       users[userIndex].room = {
@@ -72,6 +73,7 @@ io.on("connect", (socket) => {
         id: roomId,
         admin: user.name,
         maxPlayer: 5,
+        winner: [],
       };
 
     socket.join(user.room.id);
@@ -177,12 +179,14 @@ io.on("connect", (socket) => {
     callback();
   });
 
-  socket.on("play", ({ movement }, callback) => {
+  socket.on("play", ({ grid }, callback) => {
     const user = getUserById(socket.id);
 
     if (!user) return callback("user not found");
 
-    const roomMate = users.filter((u) => u.room.id === user.room.id);
+    const roomMate = users.filter(
+      (u) => u.room.id === user.room.id && !u.room.winner.includes(u.name)
+    );
 
     const userIndexInRoom = roomMate.findIndex((u) => u.id === socket.id);
 
@@ -190,11 +194,24 @@ io.on("connect", (socket) => {
       userIndexInRoom < roomMate.length - 1 ? userIndexInRoom + 1 : 0;
 
     io.to(user.room.id).emit("play", {
-      movement,
+      grid,
       username: user.name,
-      color: roomMate[nextIndexPlayer].color,
+      color: user.color,
       nextPlayer: roomMate[nextIndexPlayer].name,
     });
+  });
+
+  socket.on("win", () => {
+    const user = getUserById(socket.id);
+    const roomMate = users.filter((u) => u.room.id === user.room.id);
+
+    let userIndex = 0;
+    roomMate.forEach((u) => {
+      userIndex = users.findIndex((user) => user.id === u.id);
+      users[userIndex].room.winner.push(user.name);
+    });
+
+    io.to(user.room.id).emit("users", { users: users });
   });
 
   socket.on("disconnect", () => {
