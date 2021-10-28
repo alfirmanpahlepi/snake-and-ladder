@@ -12,13 +12,15 @@ export default function Play(): JSX.Element {
     const [dice2, setDice2] = useState<number>(6)
     const [players, setPlayers] = useState<IPlayers>([])
     const [nowPlayer, setNowPlayer] = useState<string>()
+    const [isDisabled, setDisabled] = useState<boolean>(false)
 
     const { replace } = useRouter()
 
     const { name, users } = useGlobalState()
 
     const rollDice = (): void => {
-        if (nowPlayer !== name) return
+        if (nowPlayer !== name || isDisabled) return
+        setDisabled(true)
         const start: number = new Date().getTime()
         let random1: number = 0
         let random2: number = 0
@@ -69,6 +71,7 @@ export default function Play(): JSX.Element {
         if (!nowPlayer) {
             const admin: string = users[userIndex]?.room.admin
             setNowPlayer(admin)
+            setDisabled(false)
         }
         return () => setNowPlayer("")
     }, [])
@@ -88,6 +91,7 @@ export default function Play(): JSX.Element {
                 }
             })
             setNowPlayer(nextPlayer)
+            setDisabled(false)
         })
         return () => { setNowPlayer(""); setPlayers([]); }
     }, [])
@@ -105,8 +109,8 @@ export default function Play(): JSX.Element {
                     <div className="h-1/4 flex justify-center items-center">
                         <button
                             onClick={rollDice}
-                            disabled={nowPlayer !== name}
-                            className={`${nowPlayer !== name && "cursor-not-allowed"} h-24 w-24 relative focus:outline-none`}>
+                            disabled={nowPlayer !== name || isDisabled}
+                            className={`${nowPlayer !== name || isDisabled && "cursor-not-allowed"} h-24 w-24 relative focus:outline-none`}>
                             <img src={`/dice/${dice1}.png`} alt="1" className="object-cover" />
                         </button>
                         <button
