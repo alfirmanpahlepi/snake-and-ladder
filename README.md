@@ -13,12 +13,13 @@ Snakes and ladders, known originally as Moksha Patam, is an ancient Indian board
 
 - [Node](https://nodejs.org/en/)
 - A text editor like [VSCode](https://code.visualstudio.com/)
+- [Git bash](https://git-scm.com/)
 
 1. Clone the repository: `% git clone https://github.com/ezza022/snake-and-ladder.git`
 2. Navigate to the `snake-and-ladder` directory on your computer
 3. Open your preferred text editor to view code
 4. To start a development server and view project in the browser:
-   - Navigate to `snake-and-ladder` in your command line
+   - Navigate to `client and server` in your command line
    - Run command `yarn install` to install dependencies
    - Finally, run the command `yarn dev` to start a development server
 
