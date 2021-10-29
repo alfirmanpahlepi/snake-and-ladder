@@ -98,13 +98,22 @@ export default function Play(): JSX.Element {
 
     return (
         <Layout blur={true}>
-            <div className="h-full w-full space-x-10 flex z-20 p-4 justify-center items-center">
-                <div className="h-[600px] w-[25rem] border z-20 bg-gray-50/50 p-5 space-y-4 flex flex-col">
-                    <div className="h-1/4 flex justify-center items-center flex-col">
-                        <h3 className="text-4xl font-bold text-green-800">{nowPlayer} is playing</h3>
-                    </div>
-                    <div className="h-2/4">
-                        <Chat />
+            <div className="h-full w-full space-x-6 flex z-20 p-4 justify-center items-center">
+                <div className="h-[600px] flex-grow border z-20 bg-gray-50/50 p-5 space-y-4 flex flex-col">
+                    <div className="h-3/4 space-y-5">
+                        <h1 className="font-extrabold text-4xl text-center text-green-500">Rank</h1>
+                        <ul className="space-y-2">
+                            {players
+                                .sort((a: Player, b: Player) => b.grid - a.grid)
+                                .map((player: Player, i: number): JSX.Element =>
+                                    <li className="flex items-center space-x-3">
+                                        <span className="font-semibold">{i + 1}.</span>
+                                        <div className="flex items-center space-x-2">
+                                            <div style={{ backgroundColor: player.color }} className="h-10 w-10 rounded-full border border2 border-white shadow"></div>
+                                            <h6 className="font-semibold">{player.username}</h6>
+                                        </div>
+                                    </li>)}
+                        </ul>
                     </div>
                     <div className="h-1/4 flex justify-center items-center">
                         <button
@@ -121,7 +130,15 @@ export default function Play(): JSX.Element {
                         </button>
                     </div>
                 </div>
-                <Board Players={players} />
+                <div className="w-[600px] h-[600px] z-20">
+                    <Board Players={players} />
+                </div>
+                <div className="flex-grow h-[600px] border z-20 bg-gray-50/50 p-5 flex flex-col">
+                    <h3 className="text-4xl font-bold text-green-500 pb-6 text-center">{nowPlayer} is playing</h3>
+                    <div className="flex-grow">
+                        <Chat />
+                    </div>
+                </div>
             </div>
         </Layout>
     )

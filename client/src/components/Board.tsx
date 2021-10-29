@@ -4,7 +4,7 @@ interface BoardProps { Players: Players }
 
 export default function Board({ Players }: BoardProps): JSX.Element {
     return (
-        <div className="w-[600px] h-[600px] z-20 bg-white/20 relative bg-cover grid grid-cols-10 p-6" style={{ backgroundImage: "url('/board.png')" }}>
+        <div className="w-full h-full z-20 bg-white/20 relative bg-cover grid grid-cols-10 p-6" style={{ backgroundImage: "url('/board.png')" }}>
             {
                 grids(100).map((grid: number, idx: number) => (
                     <div key={idx} className="flex justify-center items-center relative">
