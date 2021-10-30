@@ -7,6 +7,7 @@ import Board from "@/components/Board"
 import Chat from "@/components/Chat"
 import Layout from "@/components/Layout"
 import PlayerRank from "@/components/PlayerRank"
+import { limitString } from "@/config/constants"
 
 export default function Play(): JSX.Element {
     const [dice1, setDice1] = useState<number>(6)
@@ -129,7 +130,9 @@ export default function Play(): JSX.Element {
                     <Board Players={players} />
                 </div>
                 <div className="w-[23rem] h-[550px] border z-20 bg-gray-50/50 py-5 px-2 flex flex-col">
-                    <h3 className="text-4xl font-bold text-green-500 pb-6 text-center">{nowPlayer} is playing</h3>
+                    <h3 className="text-4xl font-bold text-green-500 pb-6 text-center">
+                        {limitString(nowPlayer, 10)} is playing
+                    </h3>
                     <div className="flex-grow">
                         <Chat />
                     </div>

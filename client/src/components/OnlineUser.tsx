@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { User } from "@/types"
 import socket from "@/config/socket"
+import { limitString } from "@/config/constants"
 
 interface UserProps { user: User }
 
@@ -24,7 +25,7 @@ export default function OnlineUser({ user }: UserProps): JSX.Element {
                 <span style={{ backgroundColor: user.color || "#fff" }} className="h-10 w-10 uppercase rounded-full flex justify-center items-center font-semibold">
                     {user.name[0]}
                 </span>
-                <p className="font-semibold">{user.name}</p>
+                <p className="font-semibold">{limitString(user.name, 21)}</p>
             </div>
             <button
                 disabled={!!user.room.id || isDisable}
