@@ -21,7 +21,7 @@ export default function Chat(): JSX.Element {
 
     return (
         <div className="flex flex-col h-full w-full">
-            <ScrollToBottom className="flex-grow overflow-y-auto overflow-x-hidden border bg-white/50 p-2">
+            <ScrollToBottom className="flex-grow overflow-y-auto overflow-x-hidden border bg-white/50 pl-2">
                 {messages.map((msg: Message, i: number): JSX.Element => (
                     <li key={i} className="list-none my-1">
                         <div className="flex items-center space-x-2">

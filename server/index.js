@@ -91,9 +91,12 @@ io.on("connect", (socket) => {
       user: "system",
       text: `${user.name}, welcome to room ${user.room.name}`,
     });
-    socket.broadcast
-      .to(user.room.id)
-      .emit("message", { user: "system", text: `${user.name} has joined!` });
+    socket.broadcast.to(user.room.id).emit("message", {
+      user: "system",
+      text: `${user.name} has joined! room ${user.room.name} (${
+        getUsersInRoom(user.room.id).length
+      }/${user.room.maxPlayer})`,
+    });
 
     io.to(user.room.id).emit("roomData", {
       roomMate: getUsersInRoom(user.room.id),
@@ -186,6 +189,13 @@ io.on("connect", (socket) => {
       roomMate: getUsersInRoom(user.room.id),
     });
 
+    io.to(user.room.id).emit("message", {
+      user: "system",
+      text: `room ${user.room.name} (${getUsersInRoom(user.room.id).length}/${
+        user.room.maxPlayer
+      })`,
+    });
+
     callback();
   });
 
@@ -221,6 +231,11 @@ io.on("connect", (socket) => {
       users[userIndex].room.winner.push(user.name);
     });
 
+    io.to(user.room.id).emit("message", {
+      user: "system",
+      text: `${user.name} win`,
+    });
+
     io.to(user.room.id).emit("users", { users: users });
   });
 
@@ -238,7 +253,9 @@ io.on("connect", (socket) => {
     // admin message
     io.to(user.room.id).emit("message", {
       user: "system",
-      text: `${user.name} has left.`,
+      text: `${user.name} has left! room ${user.room.name} (${
+        getUsersInRoom(user.room.id).length
+      }/${user.room.maxPlayer})`,
     });
     // room data
     io.to(user.room.id).emit("roomData", {

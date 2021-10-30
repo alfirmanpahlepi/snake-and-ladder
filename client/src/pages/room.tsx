@@ -66,7 +66,7 @@ export default function Room(): JSX.Element {
           </div>
         </div>
         <div className="flex-1 border px-5 overflow-auto bg-gray-50/50 z-20">
-          <h4 className="font-bold text-2xl border-b-2 py-3 text-red-800">online users: {users.length}</h4>
+          <h4 className="font-bold text-2xl border-b-2 py-3 text-[#149414]">online users: {users.length}</h4>
           <div className="py-3 space-y-3">
             {
               users.map((user: User, i: number) => (
