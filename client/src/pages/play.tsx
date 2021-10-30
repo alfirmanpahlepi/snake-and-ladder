@@ -116,13 +116,13 @@ export default function Play(): JSX.Element {
                             onClick={rollDice}
                             disabled={nowPlayer !== name || isDisabled}
                             className={`${nowPlayer !== name || isDisabled && "cursor-not-allowed"} h-24 w-24 relative focus:outline-none`}>
-                            <img src={`/dice/${dice1}.png`} alt="1" className="object-cover" />
+                            <img src={`/img/dice/${dice1}.png`} alt="1" className="object-cover" />
                         </button>
                         <button
                             onClick={rollDice}
                             disabled={nowPlayer !== name}
                             className={`${nowPlayer !== name && "cursor-not-allowed"} h-24 w-24 relative focus:outline-none`}>
-                            <img src={`/dice/${dice2}.png`} alt="1" className="object-cover" />
+                            <img src={`/img/dice/${dice2}.png`} alt="1" className="object-cover" />
                         </button>
                     </div>
                 </div>
