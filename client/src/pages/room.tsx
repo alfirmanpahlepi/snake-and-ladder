@@ -41,7 +41,7 @@ export default function Room(): JSX.Element {
   }, [])
 
   return (
-    <Layout blur={true}>
+    <Layout blur={false}>
       <div className="p-5 h-full w-full flex space-x-7">
         <div className="flex-[2.5] border p-5 flex flex-col space-y-5 bg-gray-50/50 z-20">
           <div className="h-[calc(100%-300px)]">
@@ -66,7 +66,7 @@ export default function Room(): JSX.Element {
           </div>
         </div>
         <div className="flex-1 border px-5 overflow-auto bg-gray-50/50 z-20">
-          <h4 className="font-bold text-2xl border-b-2 py-3">online users: {users.length}</h4>
+          <h4 className="font-bold text-2xl border-b-2 py-3 text-red-800">online users: {users.length}</h4>
           <div className="py-3 space-y-3">
             {
               users.map((user: User, i: number) => (

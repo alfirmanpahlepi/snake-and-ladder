@@ -99,11 +99,11 @@ export default function Play(): JSX.Element {
     }, [])
 
     return (
-        <Layout blur={true}>
+        <Layout blur={false}>
             <div className="h-full w-full space-x-4 flex z-20 p-4 justify-center items-center t">
                 <div className="h-[550px] w-[23rem] border z-20 bg-gray-50/50 p-5 space-y-4 flex flex-col">
                     <div className="h-3/4 space-y-5">
-                        <h1 className="font-extrabold text-4xl text-center text-green-500">Rank</h1>
+                        <h1 className="font-extrabold text-4xl text-center text-red-800">Rank</h1>
                         <ul className="space-y-2">
                             {players
                                 .sort((a: Player, b: Player) => b.grid - a.grid)
@@ -130,7 +130,7 @@ export default function Play(): JSX.Element {
                     <Board Players={players} />
                 </div>
                 <div className="w-[23rem] h-[550px] border z-20 bg-gray-50/50 py-5 px-2 flex flex-col">
-                    <h3 className="text-4xl font-bold text-green-500 pb-6 text-center">
+                    <h3 className="text-4xl font-bold text-red-800 pb-6 text-center">
                         {limitString(nowPlayer, 10)} is playing
                     </h3>
                     <div className="flex-grow">
