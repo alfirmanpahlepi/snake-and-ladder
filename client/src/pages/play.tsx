@@ -108,7 +108,7 @@ export default function Play(): JSX.Element {
                             {players
                                 .sort((a: Player, b: Player) => b.grid - a.grid)
                                 .map((player: Player, i: number): JSX.Element =>
-                                    <PlayerRank i={i} player={player} />)}
+                                    <PlayerRank key={i} no={i + 1} player={player} />)}
                         </ul>
                     </div>
                     <div className="h-1/4 flex justify-center items-center">

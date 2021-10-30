@@ -3,13 +3,13 @@ import { Player } from "@/types";
 
 interface PlayerRankProps {
     player: Player;
-    i: number;
+    no: number;
 }
 
-export default function PlayerRank({ player, i }: PlayerRankProps) {
+export default function PlayerRank({ player, no }: PlayerRankProps): JSX.Element {
     return (
         <li className="flex items-center space-x-3">
-            <span className="font-semibold">{i + 1}.</span>
+            <span className="font-semibold">{no}.</span>
             <div className="flex items-center space-x-2">
                 <span style={{ backgroundColor: player.color }}
                     className="h-10 w-10 rounded-full border border2 border-white shadow uppercase font-semibold grid place-items-center">
