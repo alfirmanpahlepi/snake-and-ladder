@@ -102,6 +102,7 @@ io.on("connect", (socket) => {
 
     io.to(user.room.id).emit("message", {
       user: user.name,
+      color: user.color,
       text: message,
     });
 

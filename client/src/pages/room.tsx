@@ -44,17 +44,19 @@ export default function Room(): JSX.Element {
     <Layout blur={true}>
       <div className="p-5 h-full w-full flex space-x-7">
         <div className="flex-[2.5] border p-5 flex flex-col space-y-5 bg-gray-50/50 z-20">
-          <div className="h-1/2">
-            <Settings roomMate={roomMate} />
+          <div className="h-[calc(100%-300px)]">
+            <div className="h-1/2">
+              <Settings roomMate={roomMate} />
+            </div>
+            <div className="h-1/2 p-3 flex justify-center items-center space-x-5">
+              {
+                roomMate.map((user: User, i: number) => (
+                  <Player key={i} user={user} />
+                ))
+              }
+            </div>
           </div>
-          <div className="h-1/2 p-3 flex justify-center items-center space-x-5">
-            {
-              roomMate.map((user: User, i: number) => (
-                <Player key={i} user={user} />
-              ))
-            }
-          </div>
-          <div className="h-1/2 p-5 flex space-x-5">
+          <div className="h-[300px] p-5 flex space-x-5">
             <div className="w-1/2 grid place-items-center">
               <ToggleReady roomMate={roomMate} />
             </div>

@@ -27,6 +27,7 @@ export interface GlobalState {
 export interface Message {
   user: string;
   text: string;
+  color: string;
 }
 
 export type IMessages = Message[];
