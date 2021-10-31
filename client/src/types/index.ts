@@ -37,7 +37,8 @@ export type Messages = Message[];
 
 export interface Player {
   username: string;
-  grid: number;
+  // grid: number;
+  grids: number[];
   color: string;
   nextPlayer?: string;
 }

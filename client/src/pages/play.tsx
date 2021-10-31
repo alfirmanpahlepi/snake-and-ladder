@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
+import useSound from "use-sound"
 import { useGlobalState } from "./_app"
 import { IPlayers, Players, Player } from "@/types"
 import socket from "@/config/socket"
@@ -8,8 +9,9 @@ import Chat from "@/components/Chat"
 import Layout from "@/components/Layout"
 import PlayerRank from "@/components/PlayerRank"
 import { limitString } from "@/config/constants"
-// import { useDiceSound } from "@/hooks/useDiceSound"
-import useSound from "use-sound"
+
+import rolling_dice from "@public/audio/rolling_dice.mp3"
+import win from "@public/audio/win.mp3"
 import dice_2 from "@public/audio/dice/Dadu_2.mp3"
 import dice_3 from "@public/audio/dice/Dadu_3.mp3"
 import dice_4 from "@public/audio/dice/Dadu_4.mp3"
@@ -28,6 +30,11 @@ export default function Play(): JSX.Element {
     const [players, setPlayers] = useState<IPlayers>([])
     const [nowPlayer, setNowPlayer] = useState<string>()
     const [isDisabled, setDisabled] = useState<boolean>(false)
+
+    const { replace } = useRouter()
+
+    const { name, users } = useGlobalState()
+
     const [play2] = useSound(dice_2, { volume: 0.3 })
     const [play3] = useSound(dice_3, { volume: 0.3 })
     const [play4] = useSound(dice_4, { volume: 0.3 })
@@ -39,13 +46,12 @@ export default function Play(): JSX.Element {
     const [play10] = useSound(dice_10, { volume: 0.3 })
     const [play11] = useSound(dice_11, { volume: 0.3 })
     const [play12] = useSound(dice_12, { volume: 0.3 })
-
-    const { replace } = useRouter()
-
-    const { name, users } = useGlobalState()
+    const [winner] = useSound(win, { volume: 0.3 })
+    const [rollingDice] = useSound(rolling_dice, { volume: 0.3, playbackRate: 0.5 })
 
     const rollDice = (): void => {
         if (nowPlayer !== name || isDisabled) return
+        rollingDice()
         setDisabled(true)
         const start: number = new Date().getTime()
         let random1: number = 0
@@ -63,30 +69,34 @@ export default function Play(): JSX.Element {
         }, 50);
 
         setTimeout(() => {
-            let result: number = random1 + random2;
-            diceSound(result)
+            const grids: number[] = [];
+            let movement: number = random1 + random2;
+            diceSound(movement)
             const user: Player | any = players.find((user) => user.username === name);
             if (user) {
-                if (result + user.grid === 100) {
+                const userLastGrid: number = user.grids[user.grids.length - 1]
+                if (movement + userLastGrid === 100) {
                     socket.emit("win")
+                    winner()
                 }
-                if (result + user.grid > 100) {
-                    /**
-                     * example of if grid > 100
-                     * 
-                     * user grid  = 98
-                     * movement   = 6
-                     * 
-                     * expect result => 99, 100, 99, 98, 97, 96
-                     */
-                    const gridNeeded: number = 100 - user.grid;
-                    const movement: number = result;
-                    result = 100 - (movement - gridNeeded)
-                }
-                else result += user.grid
 
+                for (let i = userLastGrid; i <= userLastGrid + movement; i++) {
+                    if (i === userLastGrid) continue;
+                    if (i > 100) grids.push(100 - (i - 100));
+                    else grids.push(i);
+                }
+
+            } else {
+                for (let i = 1; i <= movement; i++) {
+                    grids.push(i)
+                }
             }
-            socket.emit("play", { grid: result }, (error: string): void => { if (error) return alert(error) })
+            const lastGrid: number = grids[grids.length - 1]
+            const snakeAndLadderGrid = snakeAndLadder(lastGrid)
+            if (snakeAndLadderGrid !== lastGrid) grids.push(snakeAndLadderGrid)
+
+            socket.emit("play", { grids }, (error: string): void => { if (error) return alert(error) })
+
         }, 2000);
     }
 
@@ -104,16 +114,15 @@ export default function Play(): JSX.Element {
     }, [])
 
     useEffect(() => {
-        socket.on("play", ({ username, grid, color, nextPlayer }: Player): void => {
+        socket.on("play", ({ username, grids, color, nextPlayer }: Player): void => {
             setPlayers((crr: Players): Players => {
                 const userIndex: number = crr.findIndex((u) => u.username === username);
                 const arr: Players = crr;
 
-                if (userIndex === -1) return [...arr, { grid: snakeAndLadder(grid), username, color }];
+                if (userIndex === -1) return [...arr, { grids, username, color }];
 
                 else {
-                    const result: number = snakeAndLadder(grid);
-                    arr[userIndex].grid = result;
+                    arr[userIndex].grids = grids;
                     return arr
                 }
             })
@@ -122,6 +131,8 @@ export default function Play(): JSX.Element {
         })
         return () => { setNowPlayer(""); setPlayers([]); }
     }, [])
+
+
 
     const diceSound = (num: number) => {
         switch (num) {
@@ -159,7 +170,7 @@ export default function Play(): JSX.Element {
                         <h1 className="font-extrabold text-4xl text-center text-red-800">Rank</h1>
                         <ul className="space-y-2">
                             {players
-                                .sort((a: Player, b: Player) => b.grid - a.grid)
+                                .sort((a: Player, b: Player) => b.grids[b.grids.length - 1] - a.grids[a.grids.length - 1])
                                 .map((player: Player, i: number): JSX.Element =>
                                     <PlayerRank key={i} no={i + 1} player={player} />)}
                         </ul>
@@ -205,7 +216,7 @@ export default function Play(): JSX.Element {
  * 50 => 67
  * 71 => 92
  * 80 => 99
- * 
+ *
  * snake
  * 97 => 78
  * 95 => 56

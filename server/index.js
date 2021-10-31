@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const router = express.Router();
 const cors = require("cors");
+const PORT = process.env.PORT || 5000;
 
 const server = require("http").createServer(app);
 const io = require("socket.io")(server, {
@@ -199,7 +200,7 @@ io.on("connect", (socket) => {
     callback();
   });
 
-  socket.on("play", ({ grid }, callback) => {
+  socket.on("play", ({ grids }, callback) => {
     const user = getUserById(socket.id);
 
     if (!user) return callback("user not found");
@@ -214,7 +215,7 @@ io.on("connect", (socket) => {
       userIndexInRoom < roomMate.length - 1 ? userIndexInRoom + 1 : 0;
 
     io.to(user.room.id).emit("play", {
-      grid,
+      grids,
       username: user.name,
       color: user.color,
       nextPlayer: roomMate[nextIndexPlayer].name,
@@ -266,4 +267,4 @@ io.on("connect", (socket) => {
   });
 });
 
-server.listen(5000, () => console.log("I am listening at port: 5000 :)"));
+server.listen(PORT, () => console.log("I am listening at port: 5000 :)"));
