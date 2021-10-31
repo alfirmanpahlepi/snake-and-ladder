@@ -8,6 +8,19 @@ import Chat from "@/components/Chat"
 import Layout from "@/components/Layout"
 import PlayerRank from "@/components/PlayerRank"
 import { limitString } from "@/config/constants"
+// import { useDiceSound } from "@/hooks/useDiceSound"
+import useSound from "use-sound"
+import dice_2 from "@public/audio/dice/Dadu_2.mp3"
+import dice_3 from "@public/audio/dice/Dadu_3.mp3"
+import dice_4 from "@public/audio/dice/Dadu_4.mp3"
+import dice_5 from "@public/audio/dice/Dadu_5.mp3"
+import dice_6 from "@public/audio/dice/Dadu_6.mp3"
+import dice_7 from "@public/audio/dice/Dadu_7.mp3"
+import dice_8 from "@public/audio/dice/Dadu_8.mp3"
+import dice_9 from "@public/audio/dice/Dadu_9.mp3"
+import dice_10 from "@public/audio/dice/Dadu_10.mp3"
+import dice_11 from "@public/audio/dice/Dadu_11.mp3"
+import dice_12 from "@public/audio/dice/Dadu_12.mp3"
 
 export default function Play(): JSX.Element {
     const [dice1, setDice1] = useState<number>(6)
@@ -15,6 +28,17 @@ export default function Play(): JSX.Element {
     const [players, setPlayers] = useState<IPlayers>([])
     const [nowPlayer, setNowPlayer] = useState<string>()
     const [isDisabled, setDisabled] = useState<boolean>(false)
+    const [play2] = useSound(dice_2, { volume: 0.3 })
+    const [play3] = useSound(dice_3, { volume: 0.3 })
+    const [play4] = useSound(dice_4, { volume: 0.3 })
+    const [play5] = useSound(dice_5, { volume: 0.3 })
+    const [play6] = useSound(dice_6, { volume: 0.3 })
+    const [play7] = useSound(dice_7, { volume: 0.3 })
+    const [play8] = useSound(dice_8, { volume: 0.3 })
+    const [play9] = useSound(dice_9, { volume: 0.3 })
+    const [play10] = useSound(dice_10, { volume: 0.3 })
+    const [play11] = useSound(dice_11, { volume: 0.3 })
+    const [play12] = useSound(dice_12, { volume: 0.3 })
 
     const { replace } = useRouter()
 
@@ -40,6 +64,7 @@ export default function Play(): JSX.Element {
 
         setTimeout(() => {
             let result: number = random1 + random2;
+            diceSound(result)
             const user: Player | any = players.find((user) => user.username === name);
             if (user) {
                 if (result + user.grid === 100) {
@@ -97,6 +122,34 @@ export default function Play(): JSX.Element {
         })
         return () => { setNowPlayer(""); setPlayers([]); }
     }, [])
+
+    const diceSound = (num: number) => {
+        switch (num) {
+            case 2:
+                return play2()
+            case 3:
+                return play3()
+            case 4:
+                return play4()
+            case 5:
+                return play5()
+            case 6:
+                return play6()
+            case 7:
+                return play7()
+            case 8:
+                return play8()
+            case 9:
+                return play9()
+            case 10:
+                return play10()
+            case 11:
+                return play11()
+            default:
+                return play12()
+
+        }
+    }
 
     return (
         <Layout blur={false}>

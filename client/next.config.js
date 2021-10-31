@@ -1,32 +1,13 @@
-// const nextImages = require("next-images");
-// const nextPWA = require("next-pwa");
+module.exports = {
+  webpack(config, options) {
+    config.module.rules.push({
+      test: /\.(mp3)$/,
+      type: "asset/resource",
+      generator: {
+        filename: "static/chunks/[path][name].[hash][ext]",
+      },
+    });
 
-// const runtimeCaching = require("next-pwa/cache");
-// const path = require("path");
-
-// const config = {
-//     // prettier-ignore
-//     plugins: [
-//         nextImages,
-//         nextPWA
-//     ],
-//     settings: {
-//         reactStrictMode: true,
-//         distDir: "build",
-//         pwa: {
-//             dest: "public",
-//             runtimeCaching,
-//         },
-//         webpack: (config) => {
-//             config.resolve.alias = {
-//                 ...config.resolve.alias,
-//                 "@": path.join(__dirname, "src"),
-//                 "@public": path.join(__dirname, "public"),
-//             };
-//             return config;
-//         },
-//     },
-// };
-
-// const pipe = (funcs) => (value) => funcs.reduce((v, f) => f(v), value);
-// module.exports = pipe(config.plugins)(config.settings);
+    return config;
+  },
+};

@@ -1,3 +1,5 @@
+import { SetStateAction } from "react";
+
 interface Room {
   id: string;
   name: string;
@@ -20,8 +22,8 @@ export type IUsers = User[];
 export interface GlobalState {
   users: Users;
   name: string;
-  setUsers: Function;
-  setName: Function;
+  setUsers: SetStateAction<string | any>;
+  setName: SetStateAction<string | any>;
 }
 
 export interface Message {

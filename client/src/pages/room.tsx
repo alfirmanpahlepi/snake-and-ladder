@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useGlobalState } from "./_app";
+import useSound from "use-sound";
 import { IUsers, User, Users } from "@/types";
 import socket from "@/config/socket";
 import Chat from "@/components/Chat";
@@ -9,11 +10,17 @@ import Player from "@/components/Player";
 import Settings from "@/components/Settings";
 import OnlineUser from "@/components/OnlineUser";
 import ToggleReady from "@/components/ToggleReady";
+import welcome from "@public/audio/welcome.mp3"
 
 export default function Room(): JSX.Element {
   const { replace, query, reload, push } = useRouter()
   const { name, users } = useGlobalState()
   const [roomMate, setRoomMate] = useState<IUsers>([])
+  const [welcomeSound] = useSound(welcome, { volume: 0.3 })
+
+  useEffect(() => {
+    welcomeSound()
+  }, [welcomeSound])
 
   useEffect((): any => {
     if (!name || !query.name || !query.id || !users.length) return replace("/")

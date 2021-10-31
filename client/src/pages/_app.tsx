@@ -6,7 +6,7 @@ import "../styles/globals.css";
 const globalState: any = createContext<Partial<GlobalState>>({})
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [name, setName] = useState<string>()
+  const [name, setName] = useState<string>("")
   const [users, setUsers] = useState<IUsers | User[]>([])
 
   return (
