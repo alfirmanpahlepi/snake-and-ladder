@@ -126,8 +126,12 @@ export default function Play(): JSX.Element {
                     return arr
                 }
             })
-            setNowPlayer(nextPlayer)
             setDisabled(false)
+            if (nextPlayer) setNowPlayer(nextPlayer)
+            else {
+                alert("game over \nthanks for playing\nfind me https://github.com/ezza022/")
+                window.location.reload()
+            }
         })
         return () => { setNowPlayer(""); setPlayers([]); }
     }, [])
@@ -135,7 +139,8 @@ export default function Play(): JSX.Element {
 
     useEffect(() => {
         socket.on("game over", () => {
-            alert("game over \nthanks for playing\n find me https://github.com/ezza022/")
+            alert("game over \nthanks for playing\nfind me https://github.com/ezza022/")
+            window.location.reload()
         })
     }, [])
 

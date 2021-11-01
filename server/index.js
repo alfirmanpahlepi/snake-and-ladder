@@ -209,19 +209,22 @@ io.on("connect", (socket) => {
       (u) => u.room.id === user.room.id && !u.room.winner.includes(u.name)
     );
 
-    const userIndexInRoom = roomMate.findIndex((u) => u.id === socket.id);
+    const userIndexInRoom = 0;
 
-    const nextIndexPlayer =
-      userIndexInRoom < roomMate.length - 1 ? userIndexInRoom + 1 : 0;
+    let nextIndexPlayer = 0;
 
-    if (roomMate.length > 1)
-      io.to(user.room.id).emit("play", {
-        grids,
-        username: user.name,
-        color: user.color,
-        nextPlayer: roomMate[nextIndexPlayer].name,
-      });
-    else io.to(user.room.id).emit("game over");
+    if (roomMate.length > 1) {
+      roomMate.findIndex((u) => u.id === socket.id);
+      nextIndexPlayer =
+        userIndexInRoom < roomMate.length - 1 ? userIndexInRoom + 1 : 0;
+    }
+
+    io.to(user.room.id).emit("play", {
+      grids,
+      username: user.name,
+      color: user.color,
+      nextPlayer: nextIndexPlayer ? roomMate[nextIndexPlayer].name : "",
+    });
   });
 
   socket.on("win", () => {
