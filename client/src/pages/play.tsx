@@ -240,7 +240,7 @@ const snakeAndLadder = (grid: number): number => {
             return 56;
         case 88:
             return 24;
-        case 63:
+        case 62:
             return 18;
         case 48:
             return 26;
