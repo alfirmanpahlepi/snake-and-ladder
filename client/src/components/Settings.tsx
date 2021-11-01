@@ -19,24 +19,10 @@ export default function Settings({ roomMate }: SettingsProps): JSX.Element {
         <div className="h-full w-full">
             <p className="text-right">number of player :
                 <select onChange={(e: ChangeEvent<HTMLSelectElement>): void => setMaxPlayer(e)} value={maxPlayer}>
-                    <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
                     <option value="5">5</option>
-                </select>
-            </p>
-            <p className="text-right">number of dice :
-                <select>
-                    <option>2</option>
-                    <option disabled>1</option>
-                </select>
-            </p>
-            <p className="text-right">timer :
-                <select>
-                    <option disabled>10s</option>
-                    <option>7s</option>
-                    <option disabled>5s</option>
                 </select>
             </p>
         </div>

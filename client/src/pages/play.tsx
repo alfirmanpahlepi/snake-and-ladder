@@ -133,6 +133,13 @@ export default function Play(): JSX.Element {
     }, [])
 
 
+    useEffect(() => {
+        socket.on("game over", () => {
+            alert("game over \nthanks for playing\n find me https://github.com/ezza022/")
+        })
+    }, [])
+
+
 
     const diceSound = (num: number) => {
         switch (num) {
@@ -205,28 +212,6 @@ export default function Play(): JSX.Element {
         </Layout>
     )
 }
-
-/**
- * ladder
- *  1 => 38
- *  4 => 14
- *  8 => 30
- * 28 => 76
- * 21 => 42
- * 50 => 67
- * 71 => 92
- * 80 => 99
- *
- * snake
- * 97 => 78
- * 95 => 56
- * 88 => 24
- * 63 => 18
- * 48 => 26
- * 36 => 6
- * 32 => 10
- *
- */
 
 const snakeAndLadder = (grid: number): number => {
     switch (grid) {

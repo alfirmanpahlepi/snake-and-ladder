@@ -214,12 +214,14 @@ io.on("connect", (socket) => {
     const nextIndexPlayer =
       userIndexInRoom < roomMate.length - 1 ? userIndexInRoom + 1 : 0;
 
-    io.to(user.room.id).emit("play", {
-      grids,
-      username: user.name,
-      color: user.color,
-      nextPlayer: roomMate[nextIndexPlayer].name,
-    });
+    if (roomMate.length > 1)
+      io.to(user.room.id).emit("play", {
+        grids,
+        username: user.name,
+        color: user.color,
+        nextPlayer: roomMate[nextIndexPlayer].name,
+      });
+    else io.to(user.room.id).emit("game over");
   });
 
   socket.on("win", () => {
